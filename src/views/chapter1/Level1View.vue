@@ -1,17 +1,24 @@
 <template>
   <main class="level1-view">
     <el-card class="level-card" shadow="hover">
-      <h1>把下面这些物品分到正确的位置吧。</h1>
+      <h1>第一关：AI朋友在哪里</h1>
+      <p class="intro">
+        <strong>小芽：</strong>你知道吗，不是所有会动的东西都是“会听话”的 AI 朋友。真正的语音 AI，要能
+        “听见你说了什么、理解你说的意思、然后做出回应”。我们来试试分分类？
+      </p>
+      <p class="intro">
+        你看，一个AI朋友要真正“会听话”，需要完成三个步骤：第一步，听见；第二步，听懂；第三步，回应。
+        现在你来试试，把下面这些东西分分类，看看哪些算是“会听话”的AI朋友？
+      </p>
+      <p class="tip-line">小贴士：会自己动 ≠ 会听话</p>
+
+      <h2 class="guide-text">把下面这些物品分到正确的位置吧。</h2>
 
       <section class="zones">
         <div class="zone">
-          <h2>会听话的AI朋友</h2>
+          <h3>会听话的 AI 朋友</h3>
           <div class="drop-area" @dragover.prevent @drop="onDrop('left')">
-            <div
-              v-for="item in leftItems"
-              :key="item.id"
-              class="placed-card"
-            >
+            <div v-for="item in leftItems" :key="item.id" class="placed-card">
               {{ item.name }}
             </div>
             <p v-if="leftItems.length === 0" class="placeholder">拖到这里</p>
@@ -19,13 +26,9 @@
         </div>
 
         <div class="zone">
-          <h2>还不是 / 不完全是</h2>
+          <h3>还不是 / 不完全是</h3>
           <div class="drop-area" @dragover.prevent @drop="onDrop('right')">
-            <div
-              v-for="item in rightItems"
-              :key="item.id"
-              class="placed-card"
-            >
+            <div v-for="item in rightItems" :key="item.id" class="placed-card">
               {{ item.name }}
             </div>
             <p v-if="rightItems.length === 0" class="placeholder">拖到这里</p>
@@ -52,7 +55,7 @@
           :closable="false"
           show-icon
           title="小芽总结"
-          description="原来，不是会动就够了。能听见、能听懂、还能回应，才更像真正会听话的AI朋友。"
+          description="原来，不是会动就够了。能听见、能听懂、还能回应，才更像真正会听话的AI朋友。我们去生活里找找看，哪里还藏着这样的朋友？"
         />
         <div class="action-row">
           <el-button type="primary" size="large" round @click="goNextLevel">
@@ -101,6 +104,42 @@ const rightItems = computed(() => items.value.filter((item) => item.placedZone =
 const unplacedItems = computed(() => items.value.filter((item) => item.placedZone === null))
 const isCompleted = computed(() => items.value.every((item) => item.placedZone === item.targetZone))
 
+const correctMessages: Record<string, string> = {
+  speaker: '答对了！你说一句，它就会听，还会回应你。',
+  assistant: '没错！它能把你说的话变成文字，还能帮你完成任务。',
+  car: '答对了！它会动，但不是靠听懂你的指令。',
+  toy: '对啦！它只是普通玩具，不会听懂人说话。',
+  'light-toy': '答对了！会自己亮，不代表会听懂你说话。',
+  pai: '答对了！小派很有潜力，但现在还没有完全变成“会听话”的AI朋友。',
+}
+
+const wrongMessages: Record<string, Record<Zone, string>> = {
+  speaker: {
+    left: '',
+    right: '再想想。它不仅能听到声音，还能根据你的话做出回应。',
+  },
+  assistant: {
+    left: '',
+    right: '再试试。手机里的语音助手就是会“听话”的AI朋友。',
+  },
+  car: {
+    left: '再想想。它会动，是因为你按了遥控器，不是因为它听懂了你的话。',
+    right: '',
+  },
+  toy: {
+    left: '它很可爱，但不会听声音，也不会回应指令。',
+    right: '',
+  },
+  'light-toy': {
+    left: '它会自己亮起来，但不是因为听懂了你说话，而是按固定设定运行。',
+    right: '',
+  },
+  pai: {
+    left: '小派还差一点点。它现在会亮灯、会歪头，但还没有真正学会听懂你。',
+    right: '',
+  },
+}
+
 function onDragStart(id: string) {
   draggingId.value = id
 }
@@ -115,7 +154,7 @@ function onDrop(targetZone: Zone) {
 
   if (item.targetZone === targetZone) {
     item.placedZone = targetZone
-    showCorrectMessage(item)
+    ElMessage.success(correctMessages[item.id] || '答对了！')
     return
   }
 
@@ -123,21 +162,9 @@ function onDrop(targetZone: Zone) {
   window.setTimeout(() => {
     if (wrongDragId.value === droppedId) wrongDragId.value = ''
   }, 420)
-  ElMessage.warning('再想想看。')
-}
 
-function showCorrectMessage(item: LevelItem) {
-  if (item.name === '智能音箱') {
-    ElMessage.success('答对了！你说一句，它就会听，还会回应你。')
-    return
-  }
-
-  if (item.name === '小派') {
-    ElMessage.success('答对了！小派很有潜力，但现在还没有完全变成“会听话”的AI朋友。')
-    return
-  }
-
-  ElMessage.success('答对了！')
+  const wrongMsg = wrongMessages[item.id]?.[targetZone]
+  ElMessage.warning(wrongMsg || '再想想。')
 }
 
 function goNextLevel() {
@@ -167,10 +194,29 @@ watch(isCompleted, async (done) => {
 }
 
 h1 {
-  margin: 0 0 18px;
+  margin: 0 0 12px;
   text-align: center;
   font-size: 28px;
   color: #1f2d3d;
+}
+
+.intro {
+  margin: 0 0 10px;
+  color: #334155;
+  line-height: 1.9;
+}
+
+.tip-line {
+  margin: 0 0 12px;
+  color: #2563eb;
+  font-weight: 700;
+}
+
+.guide-text {
+  margin: 0 0 16px;
+  text-align: center;
+  font-size: 18px;
+  color: #334155;
 }
 
 .zones {
@@ -179,7 +225,7 @@ h1 {
   gap: 16px;
 }
 
-.zone h2 {
+.zone h3 {
   margin: 0 0 8px;
   font-size: 18px;
   color: #334155;
@@ -230,10 +276,6 @@ h1 {
 }
 
 .shake {
-  animation: shake 0.42s ease;
-}
-
-.drop-area.shake {
   animation: shake 0.42s ease;
 }
 

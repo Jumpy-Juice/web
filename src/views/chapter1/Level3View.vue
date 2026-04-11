@@ -1,24 +1,28 @@
 <template>
   <main class="level3-view">
     <el-card class="level-card" shadow="hover">
-      <h1>动作对比测试</h1>
+      <h1>第二关：试试看，什么才叫“会听话”</h1>
+
+      <p class="intro">
+        <strong>小芽：</strong>
+        你已经知道，不是所有会动的东西都会“听话”。那真正会听话的 AI 朋友，到底是什么样呢？先来试试对阿啵下指令吧。
+      </p>
 
       <div class="stage-layout">
         <section class="panel">
-          <h2>小芽 & 阿啵</h2>
-          <div class="character-placeholder">小芽（图片占位）</div>
+          <h2>阿啵（已训练）</h2>
           <div class="abo-placeholder" :class="aboActionClass">
-            <div class="abo-label">阿啵（图片占位）</div>
+            <div class="abo-label">阿啵状态</div>
             <div class="abo-action">{{ aboActionText }}</div>
           </div>
         </section>
 
         <section class="panel">
-          <h2>小派</h2>
+          <h2>小派（待训练）</h2>
           <div class="pai-wrap">
             <PaiRobot ref="paiRef" mode="initial" />
           </div>
-          <p class="pai-hint">小派当前会表现基础待机动效（闪烁、歪头、浮动），但不会执行具体动作。</p>
+          <p class="pai-hint">当前只会闪灯、歪头，不会执行具体动作。</p>
         </section>
       </div>
 
@@ -29,13 +33,23 @@
       </div>
 
       <div class="cmd-row" v-if="stage === 'pai'">
-        <el-button round @click="handlePaiCommand">[你好]</el-button>
-        <el-button round @click="handlePaiCommand">[转圈]</el-button>
-        <el-button round @click="handlePaiCommand">[跳个舞]</el-button>
+        <el-button round @click="handlePaiCommand('hello')">[你好]</el-button>
+        <el-button round @click="handlePaiCommand('spin')">[转圈]</el-button>
+        <el-button round @click="handlePaiCommand('dance')">[跳个舞]</el-button>
       </div>
 
+      <section class="knowledge">
+        <p>要让 AI 宠物学会“听话”，通常要经过三步：</p>
+        <ul>
+          <li>第一，听到很多声音；</li>
+          <li>第二，知道这些话分别叫什么；</li>
+          <li>第三，反复练习，记住“这句话—这个动作”的关系。</li>
+        </ul>
+        <p>阿啵已经学过，所以能做到；小派还没开始学，所以现在只会亮灯、歪头，却不会按要求行动。</p>
+      </section>
+
       <div v-if="showNextButton" class="action-row">
-        <el-button type="primary" size="large" round @click="goEnd">[查看小派的成长变化]</el-button>
+        <el-button type="primary" size="large" round @click="goEnd">[明白了！我要开始训练小派了]</el-button>
       </div>
     </el-card>
 
@@ -46,11 +60,7 @@
       @next="nextDialogue"
     />
 
-    <VideoPlayerModal
-      v-model="showVideoModal"
-      video-src=""
-      @video-ended="onVideoEnded"
-    />
+    <VideoPlayerModal v-model="showVideoModal" video-src="" @video-ended="onVideoEnded" />
   </main>
 </template>
 
@@ -83,6 +93,7 @@ const rewarded = ref(false)
 const showNextButton = ref(false)
 
 const aboClickedSet = ref<Set<Command>>(new Set())
+const paiClickedSet = ref<Set<Command>>(new Set())
 const dialogueIndex = ref(0)
 
 const aboActionText = ref('等待指令')
@@ -94,7 +105,7 @@ const dialogues = computed<DialogueItem[]>(() => {
       {
         speaker: '小芽',
         avatar: '芽',
-        text: '你想不想先看看，一个真正会听话的AI朋友大概是什么样？那你来试试对我的机器宠物“阿啵”下指令吧。',
+        text: '你已经知道，不是所有会动的东西都会“听话”。先来试试对阿啵下指令吧。',
       },
     ]
   }
@@ -104,7 +115,7 @@ const dialogues = computed<DialogueItem[]>(() => {
       {
         speaker: '小芽',
         avatar: '芽',
-        text: '现在，你用同样的指令对小派试一下？',
+        text: '看到了吗？阿啵不只是“听见”了声音，还知道每句话对应什么动作。现在，你再用同样的话试试小派。',
       },
     ]
   }
@@ -118,7 +129,17 @@ const dialogues = computed<DialogueItem[]>(() => {
     {
       speaker: '小芽',
       avatar: '芽',
-      text: '没关系。你已经发现问题了，这就是训练的第一步。',
+      text: '对，这就是关键。阿啵会“听话”，不是因为它天生更聪明，而是因为它已经训练过了；小派现在只会感应声音，还没有学会“这句话应该对应哪个动作”。',
+    },
+    {
+      speaker: '小芽',
+      avatar: '芽',
+      text: '所以，AI不是一打开就什么都会。它更像一个刚入门的新同学，需要有人教、有人带、有人陪它练习。',
+    },
+    {
+      speaker: '小芽',
+      avatar: '芽',
+      text: '而你，就是小派的小训练师。',
     },
   ]
 })
@@ -132,29 +153,36 @@ function handleAboCommand(command: Command) {
   aboClickedSet.value.add(command)
 
   if (command === 'hello') {
-    aboActionText.value = '阿啵挥手回应中...'
+    aboActionText.value = '听到【你好】→ 挥手'
     aboActionClass.value = 'action-wave'
   } else if (command === 'spin') {
-    aboActionText.value = '阿啵快速旋转中...'
+    aboActionText.value = '听到【转圈】→ 旋转'
     aboActionClass.value = 'action-spin'
   } else {
-    aboActionText.value = '阿啵先转圈再跳舞中...'
+    aboActionText.value = '听到【跳个舞】→ 先旋转，再跳跃'
     aboActionClass.value = 'action-dance'
   }
 
   if (aboClickedSet.value.size === 3) {
     stage.value = 'pai'
     dialogueIndex.value = 0
-    ElMessage.success('阿啵三种动作都完成了！')
+    ElMessage.success('阿啵演示完成！')
   }
 }
 
-function handlePaiCommand() {
-  // 小派只保留基础待机动效，不执行具体动作。
-  paiRef.value?.setEffectClass('')
-  ElMessage.warning('小派现在还不会执行这个动作，它在努力“听懂”你。')
-  stage.value = 'settlement'
-  dialogueIndex.value = 0
+function handlePaiCommand(command: Command) {
+  paiClickedSet.value.add(command)
+  paiRef.value?.setEffectClass('alert-fault')
+  ElMessage.warning(`小派收到【${command === 'hello' ? '你好' : command === 'spin' ? '转圈' : '跳个舞'}】后只会闪灯、歪头。`)
+
+  window.setTimeout(() => {
+    paiRef.value?.setEffectClass('')
+  }, 520)
+
+  if (paiClickedSet.value.size === 3) {
+    stage.value = 'settlement'
+    dialogueIndex.value = 0
+  }
 }
 
 function nextDialogue() {
@@ -176,7 +204,7 @@ async function onVideoEnded() {
     gameStore.addStar()
     showNextButton.value = true
     stage.value = 'done'
-    ElMessage.success('已完成本关，获得 1 颗小派能量星！')
+    ElMessage.success('恭喜你完成第二关！获得：小派能量星 ×1')
   }
 }
 
@@ -186,147 +214,27 @@ function goEnd() {
 </script>
 
 <style scoped>
-.level3-view {
-  min-height: 100vh;
-  padding: 24px;
-  background: linear-gradient(180deg, #f7fbff 0%, #eef8f3 100%);
-}
-
-.level-card {
-  width: min(1100px, 100%);
-  margin: 0 auto;
-  border-radius: 16px;
-  padding-bottom: 72px;
-}
-
-h1 {
-  margin: 0 0 16px;
-  text-align: center;
-  color: #1f2d3d;
-}
-
-.stage-layout {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 14px;
-}
-
-.panel {
-  border: 1px solid #dbeafe;
-  border-radius: 12px;
-  padding: 12px;
-  background: #fff;
-}
-
-h2 {
-  margin: 0 0 10px;
-  font-size: 18px;
-}
-
-.character-placeholder,
-.abo-placeholder {
-  min-height: 140px;
-  border-radius: 12px;
-  border: 2px dashed #94a3b8;
-  display: grid;
-  place-items: center;
-  text-align: center;
-  color: #334155;
-}
-
-.character-placeholder {
-  margin-bottom: 10px;
-  background: rgb(226 232 240 / 35%);
-}
-
-.abo-placeholder {
-  position: relative;
-  overflow: hidden;
-  background: rgb(191 219 254 / 35%);
-}
-
-.abo-label {
-  font-weight: 700;
-}
-
-.abo-action {
-  margin-top: 6px;
-  font-size: 14px;
-}
-
-.action-wave {
-  animation: wave 1.1s ease-in-out infinite;
-}
-
-.action-spin {
-  animation: spin 0.9s linear infinite;
-}
-
-.action-dance {
-  animation: dance 1s ease-in-out infinite;
-}
-
-.pai-wrap {
-  display: flex;
-  justify-content: center;
-}
-
-.pai-hint {
-  margin: 4px 0 0;
-  text-align: center;
-  color: #64748b;
-  font-size: 13px;
-}
-
-.cmd-row {
-  margin-top: 14px;
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  flex-wrap: wrap;
-}
-
-.action-row {
-  margin-top: 18px;
-  display: flex;
-  justify-content: center;
-}
-
-@keyframes wave {
-  0%,
-  100% {
-    transform: rotate(0deg);
-  }
-  50% {
-    transform: rotate(6deg);
-  }
-}
-
-@keyframes spin {
-  from {
-    transform: rotate(0);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@keyframes dance {
-  0%,
-  100% {
-    transform: translateY(0) rotate(0deg);
-  }
-  25% {
-    transform: translateY(-8px) rotate(-8deg);
-  }
-  75% {
-    transform: translateY(-8px) rotate(8deg);
-  }
-}
-
-@media (max-width: 900px) {
-  .stage-layout {
-    grid-template-columns: 1fr;
-  }
-}
+.level3-view { min-height: 100vh; padding: 24px; background: linear-gradient(180deg, #f7fbff 0%, #eef8f3 100%); }
+.level-card { width: min(1100px, 100%); margin: 0 auto; border-radius: 16px; padding-bottom: 72px; }
+h1 { margin: 0 0 12px; text-align: center; color: #1f2d3d; }
+.intro { margin: 0 0 10px; color: #334155; line-height: 1.8; }
+.stage-layout { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+.panel { border: 1px solid #dbeafe; border-radius: 12px; padding: 12px; background: #fff; }
+h2 { margin: 0 0 10px; font-size: 18px; }
+.abo-placeholder { min-height: 180px; border-radius: 12px; border: 2px dashed #94a3b8; display: grid; place-items: center; text-align: center; color: #334155; background: rgb(191 219 254 / 35%); }
+.abo-label { font-weight: 700; }
+.abo-action { margin-top: 6px; font-size: 14px; }
+.action-wave { animation: wave 1.1s ease-in-out infinite; }
+.action-spin { animation: spin 0.9s linear infinite; }
+.action-dance { animation: dance 1s ease-in-out infinite; }
+.pai-wrap { display: flex; justify-content: center; }
+.pai-hint { margin: 4px 0 0; text-align: center; color: #64748b; font-size: 13px; }
+.cmd-row { margin-top: 14px; display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
+.knowledge { margin-top: 12px; border-top: 1px dashed #cbd5e1; padding-top: 12px; color: #334155; line-height: 1.8; }
+.knowledge ul { margin: 0 0 8px; padding-left: 20px; }
+.action-row { margin-top: 18px; display: flex; justify-content: center; }
+@keyframes wave { 0%,100% { transform: rotate(0deg);} 50% { transform: rotate(6deg);} }
+@keyframes spin { from { transform: rotate(0);} to { transform: rotate(360deg);} }
+@keyframes dance { 0%,100% { transform: translateY(0) rotate(0deg);} 25% { transform: translateY(-8px) rotate(-8deg);} 75% { transform: translateY(-8px) rotate(8deg);} }
+@media (max-width: 900px) { .stage-layout { grid-template-columns: 1fr; } }
 </style>

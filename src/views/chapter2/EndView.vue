@@ -1,16 +1,25 @@
 <template>
   <main class="end-view">
     <el-card class="end-card" shadow="hover">
-      <h1>第二章结尾</h1>
+      <h1>小派成长记录 02</h1>
 
-      <ul class="summary-list">
-        <li>√ 声音在AI体内的奇妙旅行步骤</li>
-        <li>√ 哪些情况会让AI“听不清”</li>
-        <li>√ AI有时候也会把近音词搞混</li>
-      </ul>
+      <section class="summary-block">
+        <p class="summary-title">你已经知道：</p>
+        <ul class="summary-list">
+          <li>✓ 声音在AI体内的奇妙旅行步骤（收音→变信息→分析比对→输出结果）</li>
+          <li>✓ 哪些情况会让AI“听不清”（环境噪音/语速/知识库/硬件）</li>
+          <li>✓ AI有时候也会把近音词搞混，需要人来帮忙纠正</li>
+        </ul>
+      </section>
 
       <section class="robot-stage">
         <PaiRobot mode="listening" />
+      </section>
+
+      <section class="reward-box" aria-label="章节成长奖励">
+        <p class="reward-title">章节成长奖励：</p>
+        <p class="reward-line">⭐ 小派解锁：试听模式</p>
+        <p class="reward-line">🎁 获得装扮：专属小耳机</p>
       </section>
 
       <div class="action-row">
@@ -62,6 +71,18 @@ h1 {
   color: #1f2d3d;
 }
 
+.summary-block {
+  max-width: 860px;
+  margin: 0 auto;
+}
+
+.summary-title {
+  margin: 0 0 8px;
+  font-size: 18px;
+  font-weight: 700;
+  color: #334155;
+}
+
 .summary-list {
   margin: 0;
   padding-left: 20px;
@@ -71,6 +92,7 @@ h1 {
   margin: 8px 0;
   color: #0f766e;
   font-weight: 600;
+  line-height: 1.8;
 }
 
 .robot-stage {
@@ -79,8 +101,27 @@ h1 {
   justify-content: center;
 }
 
+.reward-box {
+  max-width: 860px;
+  margin: 6px auto 0;
+  border-top: 1px dashed #cbd5e1;
+  padding-top: 10px;
+}
+
+.reward-title {
+  margin: 0 0 6px;
+  font-weight: 800;
+  color: #334155;
+}
+
+.reward-line {
+  margin: 6px 0;
+  color: #92400e;
+  font-weight: 700;
+}
+
 .action-row {
-  margin-top: 8px;
+  margin-top: 12px;
   display: flex;
   justify-content: center;
 }

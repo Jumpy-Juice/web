@@ -1,10 +1,18 @@
 <template>
   <main class="level2-view">
     <el-card class="quiz-card" shadow="hover">
-      <h1>小派的耳朵有时候很灵，有时候又像失灵了。你能帮它找出原因吗？</h1>
+      <h1>第二关：为什么会听错，怎么帮它改正？</h1>
+
+      <p class="narration">
+        <strong>小芽：</strong>
+        小派现在已经能听到声音了，可它有时候还是会听错。别担心，很多时候不是它不认真，而是遇到了麻烦。我们一起来当“小侦探”，找出问题出在哪里吧！
+      </p>
+
+      <p class="guide-text">请看看下面的情况，帮小派选出更容易“听清”的那一边。</p>
 
       <section v-if="currentQuestion" class="question-section">
-        <h2>题目 {{ currentIndex + 1 }}：{{ currentQuestion.question }}</h2>
+        <h2>{{ currentQuestion.sceneTitle }}</h2>
+        <p class="question-line">题目：{{ currentQuestion.question }}</p>
 
         <div class="options">
           <button
@@ -16,9 +24,7 @@
             @click="chooseOption(option.id)"
           >
             <span>{{ option.text }}</span>
-            <span v-if="isAnsweredCurrent && option.id === selectedOptionId" class="mark">
-              {{ option.correct ? '✓' : '✕' }}
-            </span>
+            <span v-if="isAnsweredCurrent && option.id === selectedOptionId" class="mark">✓</span>
           </button>
         </div>
       </section>
@@ -32,9 +38,22 @@
         :title="currentQuestion.explanation"
       />
 
-      <div v-if="isFinished" class="action-row">
-        <el-button type="primary" size="large" round @click="goLevel3">[帮小派纠正错别字]</el-button>
-      </div>
+      <section v-if="isFinished" class="summary-box">
+        <p class="summary-title"><strong>小芽：</strong>你发现了吗？小派听错，常常不是因为它“笨”，而是因为遇到了四种常见麻烦：</p>
+        <ul>
+          <li>周围太吵</li>
+          <li>说话太快或不清楚</li>
+          <li>遇到没学过的内容</li>
+          <li>耳麦被挡住或设备出了问题</li>
+        </ul>
+        <p class="knowledge-line">
+          一句话知识点：AI“听不清”，不只和它自己有关，也和环境、输入内容和硬件状态有关。
+        </p>
+
+        <div class="action-row">
+          <el-button type="primary" size="large" round @click="goLevel3">[继续进入纠错训练]</el-button>
+        </div>
+      </section>
     </el-card>
 
     <KnowledgeCardModal v-model="showTipModal" :card-id="activeCardId" />
@@ -56,6 +75,7 @@ interface QuestionOption {
 }
 
 interface QuizQuestion {
+  sceneTitle: string
   question: string
   options: [QuestionOption, QuestionOption]
   explanation: string
@@ -66,37 +86,43 @@ const gameStore = useGameStore()
 
 const questions: QuizQuestion[] = [
   {
-    question: '小派在哪个环境里更容易听懂指令？',
+    sceneTitle: '场景1：环境太吵',
+    question: '小派在哪种地方更容易听懂指令？',
     options: [
       { id: 'q1-a', text: '安静的房间', correct: true },
       { id: 'q1-b', text: '吵闹的菜市场', correct: false },
     ],
     explanation:
-      '答对啦！环境太吵，AI的麦克风里混进太多杂音，它就不知道哪个才是你的声音了。',
+      '小芽：答对啦！周围太吵时，杂音会一起跑进麦克风，小派就更难分清哪一个才是你的声音。',
   },
   {
-    question: '怎么对小派说话，它听得更清楚？',
+    sceneTitle: '场景2：说话太快',
+    question: '怎么说话，小派听得更清楚？',
     options: [
-      { id: 'q2-a', text: '像念机关枪一样又快又含糊', correct: false },
-      { id: 'q2-b', text: '吐字清晰，语速适中', correct: true },
+      { id: 'q2-a', text: '又快又含糊', correct: false },
+      { id: 'q2-b', text: '吐字清楚，语速适中', correct: true },
     ],
-    explanation: '没错！说话太快或者含糊，AI提取出的声音信息就会变成一团乱麻哦。',
+    explanation:
+      '小芽：没错！说得太快、太含糊，声音信息就容易乱掉，小派当然更容易听错。',
   },
   {
-    question: '你对小派说了一句法语，它没听懂，是因为？',
+    sceneTitle: '场景3：没学过的新词',
+    question: '你说了一句小派没学过的话，它没听懂，可能是因为？',
     options: [
-      { id: 'q3-a', text: '小派的耳朵坏了', correct: false },
-      { id: 'q3-b', text: '小派的“字典”里还没学过这句外语', correct: true },
+      { id: 'q3-a', text: '它没学过', correct: true },
+      { id: 'q3-b', text: '它故意不回答', correct: false },
     ],
-    explanation: '真聪明！AI只能听懂它已经学过的东西，没见过的词汇它是认不出来的。',
+    explanation:
+      '小芽：真聪明！AI更容易听懂它学过的内容，没见过的新词、新说法，就可能认不出来。',
   },
   {
-    question: '给小派戴上了厚厚的帽子把耳麦捂住了，它没反应，是因为？',
+    sceneTitle: '场景4：耳麦被挡住了',
+    question: '如果小派的耳麦被帽子挡住了，会发生什么？',
     options: [
-      { id: 'q4-a', text: '小派生气了', correct: false },
-      { id: 'q4-b', text: '麦克风被挡住，收不到音', correct: true },
+      { id: 'q4-a', text: '听不清声音', correct: true },
+      { id: 'q4-b', text: '突然不想理人', correct: false },
     ],
-    explanation: '对啦！硬件被挡住或者坏掉，声音根本进不到小派的身体里呢。',
+    explanation: '小芽：对啦！声音进不去，它当然就没法继续识别了。',
   },
 ]
 
@@ -107,7 +133,6 @@ const isAnsweredCurrent = ref(false)
 const isFinished = ref(false)
 const rewarded = ref(false)
 const wrongShakeId = ref('')
-const rightParticleId = ref('')
 const showTipModal = ref(false)
 const activeCardId = ref('tip_affect_asr')
 const pendingReward = ref(false)
@@ -121,29 +146,29 @@ function chooseOption(optionId: string) {
   if (!option) return
 
   selectedOptionId.value = optionId
-  isAnsweredCurrent.value = true
 
   if (option.correct) {
+    isAnsweredCurrent.value = true
     ElMessage.success('答对了！')
     showExplanation.value = true
-    rightParticleId.value = optionId
     window.setTimeout(() => {
       toNextQuestion()
     }, 1400)
-  } else {
-    ElMessage.error('再想一想，这个原因不太对。')
-    wrongShakeId.value = optionId
-    window.setTimeout(() => {
-      if (wrongShakeId.value === optionId) wrongShakeId.value = ''
-    }, 420)
+    return
   }
+
+  ElMessage.error('再想一想，这个原因不太对。')
+  wrongShakeId.value = optionId
+  window.setTimeout(() => {
+    if (wrongShakeId.value === optionId) wrongShakeId.value = ''
+    if (selectedOptionId.value === optionId) selectedOptionId.value = ''
+  }, 420)
 }
 
 async function toNextQuestion() {
   if (currentIndex.value >= questions.length - 1) {
     showExplanation.value = false
     isFinished.value = true
-    // 通关 -> 触发卡片 -> 关闭后再飞星+加星
     activeCardId.value = 'tip_affect_asr'
     gameStore.unlockCard(activeCardId.value)
     pendingReward.value = true
@@ -156,16 +181,20 @@ async function toNextQuestion() {
   isAnsweredCurrent.value = false
   showExplanation.value = false
   wrongShakeId.value = ''
-  rightParticleId.value = ''
 }
 
 function getOptionClass(option: QuestionOption) {
   const classes: Record<string, boolean> = {}
+
   if (isAnsweredCurrent.value && option.id === selectedOptionId.value) {
-    classes[option.correct ? 'correct' : 'wrong'] = true
+    classes.correct = true
   }
+
+  if (!isAnsweredCurrent.value && option.id === selectedOptionId.value && !option.correct) {
+    classes.wrong = true
+  }
+
   if (wrongShakeId.value === option.id) classes['shake-error'] = true
-  if (rightParticleId.value === option.id) classes['particle-success'] = true
   return classes
 }
 
@@ -181,7 +210,7 @@ watch(showTipModal, async (open) => {
   rewarded.value = true
   await playEnergyStarFly()
   gameStore.addStar()
-  ElMessage.success('四题完成！获得 1 颗小派能量星。')
+  ElMessage.success('恭喜你完成第二关！获得：小派能量星 ×1')
 })
 </script>
 
@@ -199,16 +228,29 @@ watch(showTipModal, async (open) => {
 }
 
 h1 {
-  margin: 0 0 16px;
+  margin: 0 0 14px;
   text-align: center;
   color: #1f2d3d;
-  line-height: 1.6;
+  line-height: 1.5;
+}
+
+.narration,
+.guide-text {
+  margin: 0 0 10px;
+  color: #334155;
+  line-height: 1.8;
+}
+
+.question-line {
+  margin: 0 0 12px;
+  font-weight: 600;
+  color: #334155;
 }
 
 h2 {
-  margin: 0 0 12px;
-  font-size: 22px;
-  color: #334155;
+  margin: 0 0 8px;
+  font-size: 20px;
+  color: #1e3a8a;
 }
 
 .options {
@@ -225,7 +267,7 @@ h2 {
   min-height: 56px;
   padding: 10px 12px;
   font-size: 16px;
-  font-weight: 600;
+  font-weight: 700;
   text-align: left;
   display: flex;
   align-items: center;
@@ -258,10 +300,6 @@ h2 {
   animation: shake-error 0.42s ease;
 }
 
-.option-btn.particle-success {
-  /* TODO: 待动画同学替换真实粒子特效 */
-}
-
 .mark {
   font-size: 20px;
   font-weight: 800;
@@ -271,8 +309,32 @@ h2 {
   margin-top: 14px;
 }
 
+.summary-box {
+  margin-top: 16px;
+  border-top: 1px dashed #cbd5e1;
+  padding-top: 12px;
+}
+
+.summary-title,
+.knowledge-line {
+  margin: 0 0 8px;
+  color: #334155;
+  line-height: 1.8;
+}
+
+.summary-box ul {
+  margin: 0 0 8px;
+  padding-left: 20px;
+}
+
+.summary-box li {
+  margin: 6px 0;
+  color: #0f766e;
+  font-weight: 600;
+}
+
 .action-row {
-  margin-top: 18px;
+  margin-top: 14px;
   display: flex;
   justify-content: center;
 }

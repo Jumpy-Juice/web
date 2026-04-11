@@ -1,7 +1,18 @@
 <template>
   <main class="level3-view">
     <el-card class="quiz-card" shadow="hover">
-      <h1>如果AI尝试分析声音，有时候会把发音相近的词搞混。请你帮它选出真正的意思吧！</h1>
+      <h1>第二关：为什么会听错，怎么帮它改正？</h1>
+
+      <p class="narration">
+        <strong>小芽：</strong>
+        把这些麻烦排除以后，小派有时候还是会把发音相近的词听混。现在轮到你帮它改一改啦！
+      </p>
+      <p class="guide-text">请从错误结果里，帮小派选出真正应该听到的指令。</p>
+
+      <section class="robot-area" aria-label="小派状态反馈区">
+        <PaiRobot mode="listening" />
+        <div v-if="lightFlash" class="light-flash" aria-hidden="true"></div>
+      </section>
 
       <section v-if="currentItem" class="quiz-area">
         <p class="result-line">
@@ -35,8 +46,20 @@
         :title="currentItem.tip"
       />
 
+      <section v-if="finished" class="final-summary">
+        <p>
+          <strong>小芽：</strong>
+          太棒了！当AI听错的时候，人类可以帮它指出哪里错了、应该改成什么。这样，它下次就更有机会听对。
+        </p>
+        <p>
+          <strong>小芽总结：</strong>
+          今天你帮小派学会了两件很重要的事：第一，找到“为什么听错”的原因；第二，听错以后，及时帮它改正。
+          这就是训练AI很重要的一步——发现问题，再一点点修正问题。
+        </p>
+      </section>
+
       <div v-if="finished" class="action-row">
-        <el-button type="primary" size="large" round @click="goEnd">[查看小派的成长变化]</el-button>
+        <el-button type="primary" size="large" round @click="goEnd">[记住啦，继续训练小派！]</el-button>
       </div>
     </el-card>
 
@@ -51,6 +74,7 @@ import { ElMessage } from 'element-plus'
 import { useGameStore } from '../../stores/gameStore'
 import { playEnergyStarFly } from '../../utils/energyStarFly'
 import KnowledgeCardModal from '../../components/KnowledgeCardModal.vue'
+import PaiRobot from '../../components/PaiRobot.vue'
 
 interface QuizOption {
   text: string
@@ -73,7 +97,7 @@ const items: QuizItem[] = [
       { text: '泥好', correct: false },
       { text: '你好', correct: true },
     ],
-    tip: '它把你好听成了你号！发音太像啦。',
+    tip: '小芽：好样的！“你号”应该是【你好】。',
   },
   {
     wrongWord: '转卷',
@@ -81,7 +105,7 @@ const items: QuizItem[] = [
       { text: '转圈', correct: true },
       { text: '专权', correct: false },
     ],
-    tip: '原来是转圈呀，AI有时候也会写错别字呢。',
+    tip: '小芽：纠正成功！“转卷”应该是【转圈】。',
   },
   {
     wrongWord: '跳个五',
@@ -89,7 +113,7 @@ const items: QuizItem[] = [
       { text: '跳个舞', correct: true },
       { text: '挑个物', correct: false },
     ],
-    tip: '纠正成功！看来光能听懂字面意思还不够，还需要我们好好教教它规则！',
+    tip: '小芽：太棒了！“跳个五”应该是【跳个舞】。',
   },
 ]
 
@@ -104,6 +128,7 @@ const wordFxStage = ref<'idle' | 'break' | 'correct'>('idle')
 const showTipModal = ref(false)
 const activeCardId = ref('tip_hear_vs_understand')
 const pendingReward = ref(false)
+const lightFlash = ref(false)
 
 const currentItem = computed(() => items[index.value])
 
@@ -121,8 +146,8 @@ function choose(text: string) {
   }
 
   ElMessage.success('纠正成功！')
+  triggerLightFlash()
 
-  // 先触发错误词碎裂/震动淡出，再让正确词发光显现
   wordFxStage.value = 'break'
   window.setTimeout(() => {
     displayWord.value = option.text
@@ -138,11 +163,46 @@ function choose(text: string) {
   }, 2000)
 }
 
+function triggerLightFlash() {
+  lightFlash.value = true
+  window.setTimeout(() => {
+    lightFlash.value = false
+  }, 360)
+}
+
+function playSuccessBeep() {
+  if (typeof window === 'undefined') return
+  const AudioCtx = window.AudioContext || (window as unknown as { webkitAudioContext?: typeof AudioContext }).webkitAudioContext
+  if (!AudioCtx) return
+
+  const ctx = new AudioCtx()
+  const osc = ctx.createOscillator()
+  const gain = ctx.createGain()
+
+  osc.type = 'triangle'
+  osc.frequency.setValueAtTime(880, ctx.currentTime)
+  osc.frequency.exponentialRampToValueAtTime(1320, ctx.currentTime + 0.18)
+
+  gain.gain.setValueAtTime(0.0001, ctx.currentTime)
+  gain.gain.exponentialRampToValueAtTime(0.2, ctx.currentTime + 0.03)
+  gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.22)
+
+  osc.connect(gain)
+  gain.connect(ctx.destination)
+
+  osc.start()
+  osc.stop(ctx.currentTime + 0.24)
+
+  osc.onended = () => {
+    void ctx.close()
+  }
+}
+
 async function toNext() {
   if (index.value >= items.length - 1) {
     showTip.value = false
     finished.value = true
-    // 通关 -> 触发卡片 -> 关闭后再飞星+加星
+    playSuccessBeep()
     activeCardId.value = 'tip_hear_vs_understand'
     gameStore.unlockCard(activeCardId.value)
     pendingReward.value = true
@@ -175,7 +235,7 @@ watch(showTipModal, async (open) => {
   rewarded.value = true
   await playEnergyStarFly()
   gameStore.addStar()
-  ElMessage.success('本关完成，获得 1 颗小派能量星！')
+  ElMessage.success('恭喜你完成第二关！获得：小派能量星 ×1')
 })
 </script>
 
@@ -193,10 +253,38 @@ watch(showTipModal, async (open) => {
 }
 
 h1 {
-  margin: 0 0 16px;
+  margin: 0 0 12px;
   text-align: center;
   color: #1f2d3d;
   line-height: 1.6;
+}
+
+.narration,
+.guide-text {
+  margin: 0 0 10px;
+  color: #334155;
+  line-height: 1.8;
+}
+
+.robot-area {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  min-height: 240px;
+  margin-top: 2px;
+}
+
+.light-flash {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 220px;
+  height: 220px;
+  transform: translate(-50%, -56%);
+  border-radius: 999px;
+  pointer-events: none;
+  background: radial-gradient(circle, rgb(250 204 21 / 45%) 0%, rgb(250 204 21 / 0%) 70%);
+  animation: flash-pop 0.36s ease;
 }
 
 .result-line {
@@ -261,10 +349,33 @@ h1 {
   margin-top: 14px;
 }
 
+.final-summary {
+  margin-top: 14px;
+  border-top: 1px dashed #cbd5e1;
+  padding-top: 12px;
+  color: #334155;
+  line-height: 1.9;
+}
+
 .action-row {
   margin-top: 16px;
   display: flex;
   justify-content: center;
+}
+
+@keyframes flash-pop {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -56%) scale(0.75);
+  }
+  40% {
+    opacity: 1;
+    transform: translate(-50%, -56%) scale(1.05);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -56%) scale(1.18);
+  }
 }
 
 @keyframes word-break {
