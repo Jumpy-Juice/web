@@ -22,23 +22,24 @@ import PaiRobot from '../components/PaiRobot.vue'
 const router = useRouter()
 const paiRef = ref<InstanceType<typeof PaiRobot> | null>(null)
 
-function playVoicePlaceholder() {
-  // 占位：后续替换为真实音频路径
-  console.log('播放小派真人感谢语音')
-  const audio = new Audio('')
-  audio.play().catch(() => {
-    // 空 src 会失败，这里仅做占位，不阻断动作反馈
-  })
+function playVoiceLine(text: string) {
+  if (typeof window === 'undefined' || !window.speechSynthesis) return
+  window.speechSynthesis.cancel()
+  const u = new SpeechSynthesisUtterance(text)
+  u.lang = 'zh-CN'
+  u.rate = 1.02
+  u.pitch = 1.05
+  window.speechSynthesis.speak(u)
 }
 
 function doWave() {
   paiRef.value?.playAction('wave')
-  playVoicePlaceholder()
+  playVoiceLine('你好，小训练师！谢谢你教会我听懂这个世界！')
 }
 
 function doRotate() {
   paiRef.value?.playAction('rotate')
-  playVoicePlaceholder()
+  playVoiceLine('好的，转一圈！')
 }
 
 function doDance() {
@@ -47,7 +48,7 @@ function doDance() {
   window.setTimeout(() => {
     paiRef.value?.playAction('jump')
   }, 520)
-  playVoicePlaceholder()
+  playVoiceLine('跳个舞给你看！')
 }
 
 function goHome() {

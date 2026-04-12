@@ -1,5 +1,5 @@
 <template>
-  <main class="level1-view">
+  <main class="level1-view" :class="{ 'dialogue-open': showDialogue }">
     <el-card class="level-card" shadow="hover">
       <h1>规则连线：指令 → 动作</h1>
       <p class="tip-line">
@@ -311,6 +311,10 @@ onBeforeUnmount(() => {
   min-height: 100vh;
   padding: 24px;
   background: linear-gradient(180deg, #f7fbff 0%, #eef8f3 100%);
+}
+
+.level1-view.dialogue-open {
+  padding-bottom: 220px;
 }
 
 .level-card {

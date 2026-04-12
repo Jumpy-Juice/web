@@ -2,11 +2,12 @@
   <main class="end-view">
     <el-card class="end-card" shadow="hover">
       <h1>终极成长记录：唤醒成功！</h1>
+      <p class="record-id">小派成长记录 03</p>
 
       <ul class="summary-list">
-        <li>√ 按规则理解指令</li>
-        <li>√ 根据样本识别三种基础口令</li>
-        <li>√ 执行动作并在调试后变得更稳定</li>
+        <li>✓ 按规则理解指令（输入→输出的映射）</li>
+        <li>✓ 根据样本识别三种基础口令</li>
+        <li>✓ 执行动作并在调试后变得更稳定</li>
       </ul>
 
       <section class="evo-stage">
@@ -19,10 +20,14 @@
           <PaiRobot mode="interactive" />
         </div>
 
-        <p class="reward-text">终极奖励：小派解锁【指令互动模式】！</p>
+        <p class="reward-text">⭐ 终极奖励：小派解锁【指令互动模式】！完成最终成长形态！</p>
       </section>
 
       <p class="pai-line">“你好，小训练师！谢谢你教会我听懂这个世界！”</p>
+
+      <p class="assistant-hint">
+        小芽：小派的语音变得更自然、更清晰啦！点下面按钮，进入自由互动模式，随便试试三个口令吧～
+      </p>
 
       <section class="engineer-box">
         <h2>工程师最终总结与沉淀</h2>
@@ -131,6 +136,15 @@ h1 {
   letter-spacing: 1px;
 }
 
+.record-id {
+  margin: 0 0 14px;
+  text-align: center;
+  font-size: 15px;
+  font-weight: 800;
+  color: #0f766e;
+  letter-spacing: 1px;
+}
+
 .summary-list {
   margin: 0;
   padding-left: 20px;
@@ -227,6 +241,16 @@ h1 {
   font-size: 18px;
   font-weight: 700;
   color: #1f2d3d;
+}
+
+.assistant-hint {
+  margin: 12px auto 0;
+  max-width: 860px;
+  text-align: center;
+  font-size: 15px;
+  font-weight: 600;
+  color: #334155;
+  line-height: 1.65;
 }
 
 .engineer-box {

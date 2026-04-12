@@ -1,5 +1,5 @@
 <template>
-  <main class="level3-view">
+  <main class="level3-view" :class="{ 'dialogue-open': !showNextButton }">
     <el-card class="level-card" shadow="hover">
       <h1>第二关：试试看，什么才叫“会听话”</h1>
 
@@ -54,6 +54,7 @@
     </el-card>
 
     <DialogueBox
+      v-if="!showNextButton"
       :speaker-name="currentDialogue.speaker"
       :avatar-text="currentDialogue.avatar"
       :content="currentDialogue.text"
@@ -215,6 +216,7 @@ function goEnd() {
 
 <style scoped>
 .level3-view { min-height: 100vh; padding: 24px; background: linear-gradient(180deg, #f7fbff 0%, #eef8f3 100%); }
+.level3-view.dialogue-open { padding-bottom: 220px; }
 .level-card { width: min(1100px, 100%); margin: 0 auto; border-radius: 16px; padding-bottom: 72px; }
 h1 { margin: 0 0 12px; text-align: center; color: #1f2d3d; }
 .intro { margin: 0 0 10px; color: #334155; line-height: 1.8; }

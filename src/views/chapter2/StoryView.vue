@@ -1,5 +1,5 @@
 <template>
-  <main class="story-view">
+  <main class="story-view" :class="{ 'dialogue-open': !showNextButton }">
     <el-card class="story-card" shadow="hover">
       <h1>第二章：听见声音，开始分辨</h1>
 
@@ -25,6 +25,7 @@
     </el-card>
 
     <DialogueBox
+      v-if="!showNextButton"
       :speaker-name="currentDialogue.speakerName"
       :avatar-text="currentDialogue.avatarText"
       :content="currentDialogue.content"
@@ -137,6 +138,11 @@ function goLevel1() {
   min-height: 100vh;
   padding: 24px;
   background: linear-gradient(180deg, #f7fbff 0%, #eef8f3 100%);
+}
+
+/* 底部固定对话条高度约 180–220px，留出空间避免正文被挡、并便于滚到可点区域 */
+.story-view.dialogue-open {
+  padding-bottom: 220px;
 }
 
 .story-card {

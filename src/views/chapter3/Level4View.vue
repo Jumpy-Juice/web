@@ -38,15 +38,26 @@
         <p v-if="feedback" class="feedback">{{ feedback }}</p>
       </section>
 
-      <div v-if="resolved" class="action-row">
+      <div v-if="resolved" class="action-row action-row--primary">
         <el-button type="primary" size="large" round @click="goEnd">[唤醒最终形态小派！]</el-button>
       </div>
+
+      <section v-if="resolved" class="panel panel--after-cta">
+        <el-alert
+          class="xiaoya-summary"
+          type="success"
+          :closable="false"
+          show-icon
+          title="小芽总结"
+          description="样本太少、环境太吵、规则设错……这些都会让AI变“笨”。不断发现问题并调试，AI才会越来越聪明！这就是真正的工程师做的事。"
+        />
+      </section>
     </el-card>
 
     <div v-if="showJackpot" class="jackpot">
       <div class="jackpot-inner">
-        <p class="jackpot-title">大满贯！</p>
-        <p class="jackpot-sub">你已经集齐 10 颗能量星</p>
+        <p class="jackpot-title">恭喜你完成最后一关！</p>
+        <p class="jackpot-sub">集齐了全部 {{ maxStars }} 颗能量星！</p>
       </div>
     </div>
 
@@ -100,8 +111,8 @@ async function choose(choice: Choice) {
     gameStore.addStar()
   }
 
-  // 大满贯特效（当星星达到上限时触发；若未达上限也会轻微庆祝一下）
   showJackpot.value = true
+  window.dispatchEvent(new CustomEvent('stars-jackpot'))
   window.setTimeout(() => {
     showJackpot.value = false
     if (!isMax.value) {
@@ -176,10 +187,22 @@ h2 {
   line-height: 1.8;
 }
 
+.panel--after-cta {
+  margin-top: 14px;
+}
+
+.xiaoya-summary {
+  margin-top: 0;
+}
+
 .action-row {
   margin-top: 16px;
   display: flex;
   justify-content: center;
+}
+
+.action-row--primary {
+  margin-top: 14px;
 }
 
 .jackpot {

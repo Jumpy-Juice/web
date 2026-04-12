@@ -1,5 +1,5 @@
 <template>
-  <main class="story-view">
+  <main class="story-view" :class="{ 'dialogue-open': !showNextButton }">
     <el-card class="story-card" shadow="hover">
       <h1>第三章：训练小派“听懂并行动”</h1>
 
@@ -18,6 +18,7 @@
     </el-card>
 
     <DialogueBox
+      v-if="!showNextButton"
       :speaker-name="currentDialogue.speakerName"
       :avatar-text="currentDialogue.avatarText"
       :content="currentDialogue.content"
@@ -104,6 +105,10 @@ onBeforeUnmount(() => {
   min-height: 100vh;
   padding: 24px;
   background: linear-gradient(180deg, #f7fbff 0%, #eef8f3 100%);
+}
+
+.story-view.dialogue-open {
+  padding-bottom: 220px;
 }
 
 .story-card {
