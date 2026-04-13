@@ -1,0 +1,2 @@
+
+66f137c2ca572b9234a4108b344f7d9be9caa516	{"key":"make-fetch-happen:request-cache:http://registry.npmmirror.com/magic-string-ast","integrity":null,"time":1776060449204,"size":"262","metadata":{"time":1776060449204,"url":"http://registry.npmmirror.com/magic-string-ast","reqHeaders":{"accept":"application/json"},"resHeaders":{"content-type":"text/html","date":"Mon, 13 Apr 2026 06:07:26 GMT","location":"https://registry.npmmirror.com/magic-string-ast"},"options":{"compress":true},"status":301}}

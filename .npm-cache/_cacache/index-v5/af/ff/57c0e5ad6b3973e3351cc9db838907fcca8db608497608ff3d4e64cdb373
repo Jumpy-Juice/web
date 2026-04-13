@@ -1,0 +1,2 @@
+
+4f0a8cf91610a49ff48f87b92c886fb6c294ddbd	{"key":"make-fetch-happen:request-cache:http://registry.npmmirror.com/typescript/-/typescript-6.0.2.tgz","integrity":null,"time":1776060294708,"size":"262","metadata":{"time":1776060294708,"url":"http://registry.npmmirror.com/typescript/-/typescript-6.0.2.tgz","reqHeaders":{},"resHeaders":{"content-type":"text/html","date":"Mon, 13 Apr 2026 06:04:51 GMT","location":"https://registry.npmmirror.com/typescript/-/typescript-6.0.2.tgz"},"options":{"compress":true},"status":301}}

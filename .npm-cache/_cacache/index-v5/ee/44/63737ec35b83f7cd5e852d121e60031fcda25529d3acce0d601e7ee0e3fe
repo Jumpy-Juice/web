@@ -1,0 +1,2 @@
+
+ba822d05badcc99c45f4a2af33b64ec948d3fd7d	{"key":"make-fetch-happen:request-cache:http://registry.npmmirror.com/pathe","integrity":null,"time":1776060447788,"size":"262","metadata":{"time":1776060447788,"url":"http://registry.npmmirror.com/pathe","reqHeaders":{"accept":"application/json"},"resHeaders":{"content-type":"text/html","date":"Mon, 13 Apr 2026 06:07:25 GMT","location":"https://registry.npmmirror.com/pathe"},"options":{"compress":true},"status":301}}

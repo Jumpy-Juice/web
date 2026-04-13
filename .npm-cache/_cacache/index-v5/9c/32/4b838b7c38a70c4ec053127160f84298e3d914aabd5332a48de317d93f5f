@@ -1,0 +1,2 @@
+
+c681724ca6dcc88ad8d9a41b7c3db8059bdf629b	{"key":"make-fetch-happen:request-cache:http://registry.npmmirror.com/esbuild","integrity":null,"time":1776060447555,"size":"262","metadata":{"time":1776060447555,"url":"http://registry.npmmirror.com/esbuild","reqHeaders":{"accept":"application/json"},"resHeaders":{"content-type":"text/html","date":"Mon, 13 Apr 2026 06:07:24 GMT","location":"https://registry.npmmirror.com/esbuild"},"options":{"compress":true},"status":301}}

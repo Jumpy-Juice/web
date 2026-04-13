@@ -1,0 +1,2 @@
+
+dac216e3e899896ed019b0636271d98e879baaa5	{"key":"make-fetch-happen:request-cache:http://registry.npmmirror.com/@jridgewell%2fremapping","integrity":null,"time":1776060449205,"size":"262","metadata":{"time":1776060449205,"url":"http://registry.npmmirror.com/@jridgewell%2fremapping","reqHeaders":{"accept":"application/json"},"resHeaders":{"content-type":"text/html","date":"Mon, 13 Apr 2026 06:07:26 GMT","location":"https://registry.npmmirror.com/@jridgewell%2fremapping"},"options":{"compress":true},"status":301}}

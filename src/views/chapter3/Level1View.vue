@@ -1,9 +1,18 @@
 <template>
   <main class="level1-view" :class="{ 'dialogue-open': showDialogue }">
     <el-card class="level-card" shadow="hover">
-      <h1>规则连线：指令 → 动作</h1>
+      <div class="level-header">
+        <h1>🎯 Level 1：规则连线 - 指令 → 动作</h1>
+        <img 
+          v-if="showDecor" 
+          class="level-decor" 
+          src="../../assets/chapter3/小歪头招手跳舞图和视频/image_1776015117151.png" 
+          alt="关卡装饰"
+        />
+      </div>
+
       <p class="tip-line">
-        小提示：把“你说的话”变成“要做什么”，这一步叫
+        小提示：把"你说的话"变成"要做什么"，这一步叫
         <button class="term-btn" type="button" @click="openCard('tip_intent_recognition')">【意图识别】</button>
       </p>
 
@@ -58,7 +67,7 @@
       </section>
 
       <section class="pairs">
-        <p class="pairs-title">已配对：</p>
+        <p class="pairs-title">✅ 已配对：</p>
         <div v-if="matchedPairs.length === 0" class="pairs-empty">还没有配对，先从左边选一条指令吧。</div>
         <div v-else class="pairs-list">
           <div v-for="pair in matchedPairs" :key="pair.commandId" class="pair-row">
@@ -78,7 +87,7 @@
       v-if="showDialogue"
       speaker-name="小芽"
       avatar-text="芽"
-      content="太棒了！规则定好了，接下来我们需要准备大量的‘样本’来教它认识这些指令。"
+      content="太棒了！规则定好了，接下来我们需要准备大量的'样本'来教它认识这些指令。"
       @next="ackDialogue"
     />
 
@@ -119,6 +128,7 @@ interface LinkLine {
 const router = useRouter()
 const gameStore = useGameStore()
 
+const showDecor = ref(false)
 const commands: Item[] = [
   { id: 'hello', text: '你好' },
   { id: 'spin', text: '转圈' },
@@ -139,9 +149,9 @@ const correctMap: Record<string, string> = {
 
 const selectedCommandId = ref<string>('')
 const boardRef = ref<HTMLElement | null>(null)
-const matched = ref<Map<string, string>>(new Map()) // commandId -> actionId
+const matched = ref<Map<string, string>>(new Map())
 const reverseMatched = computed(() => {
-  const m = new Map<string, string>() // actionId -> commandId
+  const m = new Map<string, string>()
   matched.value.forEach((actionId, commandId) => m.set(actionId, commandId))
   return m
 })
@@ -186,7 +196,6 @@ async function selectAction(actionId: string) {
   const commandId = selectedCommandId.value
   const isCorrect = correctMap[commandId] === actionId
 
-  // 画线：以 board 作为坐标系
   await nextTick()
   const pts = calcLinePoints(commandId, actionId)
   const line: LinkLine = {
@@ -210,7 +219,6 @@ async function selectAction(actionId: string) {
       flashWrongActionId.value = ''
     }, 420)
 
-    // 错线：红色闪烁 1 秒后消失
     const removeId = line.id
     window.setTimeout(() => {
       const idx = lines.value.findIndex((l) => l.id === removeId)
@@ -298,7 +306,9 @@ function recomputeAllLines() {
 onMounted(() => {
   resizeHandler = () => recomputeAllLines()
   window.addEventListener('resize', resizeHandler)
-  nextTick(() => recomputeAllLines())
+  window.setTimeout(() => {
+    showDecor.value = true
+  }, 600)
 })
 
 onBeforeUnmount(() => {
@@ -318,222 +328,203 @@ onBeforeUnmount(() => {
 }
 
 .level-card {
-  width: min(1100px, 100%);
+  width: min(980px, 100%);
   margin: 0 auto;
   border-radius: 16px;
-  padding-bottom: 72px;
 }
 
-h1 {
-  margin: 0 0 14px;
-  text-align: center;
+.level-header {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.level-header h1 {
+  margin: 0;
   color: #1f2d3d;
+  flex: 1;
+}
+
+.level-decor {
+  width: 70px;
+  height: 70px;
+  animation: bounce-in 0.6s ease-out;
 }
 
 .tip-line {
-  margin: 0 0 12px;
-  text-align: center;
-  color: #334155;
-  font-weight: 600;
+  margin: 12px 0;
+  color: #0f766e;
+  font-size: 14px;
 }
 
 .term-btn {
-  border: 0;
-  background: transparent;
-  color: #2563eb;
-  font-weight: 900;
+  background: none;
+  border: none;
+  color: #0284c7;
   cursor: pointer;
-  padding: 0 4px;
-  border-radius: 8px;
-  animation: term-glow 1.4s ease-in-out infinite;
-}
-
-.term-btn:hover {
+  font-weight: 600;
+  padding: 0 2px;
   text-decoration: underline;
 }
 
+.term-btn:hover {
+  color: #0369a1;
+}
+
 .board {
+  margin: 24px 0;
   position: relative;
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 16px;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  min-height: 300px;
 }
 
 .link-layer {
   position: absolute;
-  inset: 0;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
   pointer-events: none;
-  z-index: 1;
-}
-
-.col {
-  position: relative;
-  z-index: 2;
 }
 
 .link-line {
-  stroke-width: 4;
-  stroke-linecap: round;
-  opacity: 0.95;
-  filter: drop-shadow(0 6px 12px rgb(0 0 0 / 12%));
+  stroke: #cbd5e1;
+  stroke-width: 2;
+  transition: stroke 0.3s;
 }
 
 .link-line.correct {
-  stroke: #22c55e;
+  stroke: #10b981;
+  opacity: 0.8;
 }
 
 .link-line.wrong {
   stroke: #ef4444;
-  animation: wrong-line 1s ease;
+  animation: wrong-flash 0.5s ease;
 }
 
-h2 {
-  margin: 0 0 10px;
-  font-size: 18px;
-  color: #334155;
+.col h2 {
+  margin: 0 0 12px;
+  font-size: 16px;
+  color: #0f766e;
 }
 
 .card-list {
-  border: 1px solid #dbeafe;
-  border-radius: 12px;
-  background: #f8fbff;
-  padding: 12px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
 }
 
 .rule-card {
-  width: 100%;
-  border: 1px solid #cbd5e1;
-  border-radius: 12px;
-  background: #fff;
-  padding: 12px;
-  font-size: 16px;
-  font-weight: 800;
-  color: #0f172a;
-  text-align: left;
+  padding: 12px 16px;
+  background: #dbeafe;
+  border: 2px solid #0284c7;
+  border-radius: 8px;
   cursor: pointer;
-  transition: transform 0.08s ease, border-color 0.2s ease, background 0.2s ease;
+  font-weight: 600;
+  transition: all 0.3s;
+  color: #0c4a6e;
 }
 
 .rule-card:hover:not(:disabled) {
-  border-color: #60a5fa;
+  background: #0284c7;
+  color: white;
+  transform: translateX(4px);
 }
 
 .rule-card.selected {
-  border-color: #2563eb;
-  background: #eff6ff;
+  background: #0284c7;
+  color: white;
+  box-shadow: 0 0 8px rgba(2, 132, 199, 0.6);
 }
 
 .rule-card.locked {
-  border-color: #22c55e;
-  background: #f0fdf4;
-  color: #166534;
+  opacity: 0.5;
   cursor: not-allowed;
 }
 
 .rule-card.wrong {
-  border-color: #ef4444;
-  background: #fef2f2;
-  animation: wrong-flash 0.42s ease;
-}
-
-.rule-card:disabled {
-  opacity: 1;
+  animation: shake 0.4s;
 }
 
 .pairs {
-  margin-top: 14px;
-  border-top: 1px dashed #cbd5e1;
-  padding-top: 14px;
+  margin: 20px 0;
+  padding: 16px;
+  background: #f0fdf4;
+  border-radius: 8px;
+  border-left: 4px solid #10b981;
 }
 
 .pairs-title {
-  margin: 0 0 8px;
-  font-weight: 800;
-  color: #334155;
+  margin: 0 0 12px;
+  font-weight: 700;
+  color: #065f46;
 }
 
 .pairs-empty {
-  color: #64748b;
+  color: #92400e;
+  font-style: italic;
 }
 
 .pairs-list {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
 }
 
 .pair-row {
-  display: grid;
-  grid-template-columns: auto 1fr auto;
+  display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
 }
 
 .pair-pill {
-  border-radius: 999px;
-  padding: 8px 12px;
-  background: #f0fdf4;
-  border: 1px solid #22c55e;
-  color: #166534;
-  font-weight: 800;
+  padding: 6px 12px;
+  background: white;
+  border: 1px solid #10b981;
+  border-radius: 16px;
+  font-size: 13px;
+  color: #065f46;
 }
 
 .pair-line {
+  flex: 1;
   height: 2px;
-  background: linear-gradient(90deg, #22c55e 0%, #86efac 50%, #22c55e 100%);
-  border-radius: 999px;
+  background: linear-gradient(90deg, #10b981, #7ee8c1);
 }
 
 .action-row {
-  margin-top: 16px;
+  margin-top: 24px;
   display: flex;
   justify-content: center;
 }
 
-@keyframes wrong-flash {
-  0%,
+@keyframes bounce-in {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
   100% {
-    transform: translateX(0);
-  }
-  25% {
-    transform: translateX(-4px);
-  }
-  75% {
-    transform: translateX(4px);
-  }
-}
-
-@keyframes wrong-line {
-  0%,
-  100% {
-    opacity: 0.15;
-  }
-  20%,
-  60% {
     opacity: 1;
+    transform: translateY(0);
   }
 }
 
-@keyframes term-glow {
-  0%,
-  100% {
-    box-shadow: 0 0 0 0 rgb(37 99 235 / 0%);
-    background: rgb(37 99 235 / 0%);
-  }
-  50% {
-    box-shadow: 0 0 0 10px rgb(37 99 235 / 10%);
-    background: rgb(37 99 235 / 8%);
-  }
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  10% { transform: translateX(-4px); }
+  20% { transform: translateX(4px); }
+  30% { transform: translateX(-4px); }
+  40% { transform: translateX(4px); }
 }
 
-@media (max-width: 900px) {
-  .board {
-    grid-template-columns: 1fr;
-  }
+@keyframes wrong-flash {
+  0% { opacity: 0; }
+  50% { opacity: 1; }
+  100% { opacity: 0; }
 }
 </style>

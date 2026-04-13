@@ -1,0 +1,2 @@
+
+9f7a974ff01ee60dba838013a65e5c0ed46df210	{"key":"make-fetch-happen:request-cache:http://registry.npmmirror.com/quansync","integrity":null,"time":1776060449200,"size":"262","metadata":{"time":1776060449200,"url":"http://registry.npmmirror.com/quansync","reqHeaders":{"accept":"application/json"},"resHeaders":{"content-type":"text/html","date":"Mon, 13 Apr 2026 06:07:26 GMT","location":"https://registry.npmmirror.com/quansync"},"options":{"compress":true},"status":301}}
