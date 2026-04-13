@@ -1,0 +1,2 @@
+
+077691c7e9d4b3134a31754a1a9ccb7be8c54a25	{"key":"make-fetch-happen:request-cache:http://registry.npmmirror.com/@vitejs%2fplugin-vue","integrity":null,"time":1776060445428,"size":"262","metadata":{"time":1776060445428,"url":"http://registry.npmmirror.com/@vitejs%2fplugin-vue","reqHeaders":{"accept":"application/json"},"resHeaders":{"content-type":"text/html","date":"Mon, 13 Apr 2026 06:07:22 GMT","location":"https://registry.npmmirror.com/@vitejs%2fplugin-vue"},"options":{"compress":true},"status":301}}

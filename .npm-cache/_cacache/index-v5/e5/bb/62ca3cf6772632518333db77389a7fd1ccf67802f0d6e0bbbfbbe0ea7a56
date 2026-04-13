@@ -1,0 +1,2 @@
+
+13ac68a1575315ee616282febeff4ff8fc404904	{"key":"make-fetch-happen:request-cache:http://registry.npmmirror.com/speakingurl","integrity":null,"time":1776060448262,"size":"262","metadata":{"time":1776060448262,"url":"http://registry.npmmirror.com/speakingurl","reqHeaders":{"accept":"application/json"},"resHeaders":{"content-type":"text/html","date":"Mon, 13 Apr 2026 06:07:25 GMT","location":"https://registry.npmmirror.com/speakingurl"},"options":{"compress":true},"status":301}}

@@ -1,0 +1,2 @@
+
+5033ae31d39ba3f8f9c10aaac8dba452e8331e17	{"key":"make-fetch-happen:request-cache:http://registry.npmmirror.com/scule","integrity":null,"time":1776060447796,"size":"262","metadata":{"time":1776060447796,"url":"http://registry.npmmirror.com/scule","reqHeaders":{"accept":"application/json"},"resHeaders":{"content-type":"text/html","date":"Mon, 13 Apr 2026 06:07:25 GMT","location":"https://registry.npmmirror.com/scule"},"options":{"compress":true},"status":301}}
