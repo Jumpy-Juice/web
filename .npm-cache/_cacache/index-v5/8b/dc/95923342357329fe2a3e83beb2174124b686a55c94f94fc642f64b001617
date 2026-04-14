@@ -1,2 +1,0 @@
-
-91943bc75e3407372f871748a39a7aab9fbb98fe	{"key":"make-fetch-happen:request-cache:http://registry.npmmirror.com/muggle-string","integrity":null,"time":1776060447771,"size":"262","metadata":{"time":1776060447771,"url":"http://registry.npmmirror.com/muggle-string","reqHeaders":{"accept":"application/json"},"resHeaders":{"content-type":"text/html","date":"Mon, 13 Apr 2026 06:07:25 GMT","location":"https://registry.npmmirror.com/muggle-string"},"options":{"compress":true},"status":301}}

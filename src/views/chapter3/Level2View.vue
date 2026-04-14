@@ -1,16 +1,7 @@
 <template>
   <main class="level2-view">
     <el-card class="level-card" shadow="hover">
-      <div class="level-header">
-        <h1>🏷️ Level 2：样本打标 - 教小派认识指令</h1>
-        <img 
-          v-if="showDecor" 
-          class="level-decor" 
-          src="../../assets/chapter3/小歪头招手跳舞图和视频/image_1776015117805.png" 
-          alt="打标图标"
-        />
-      </div>
-
+      <h1>样本打标：教小派认识指令</h1>
       <p class="tip-line">
         小提示：把样本句子贴上正确标签，这一步叫
         <button class="term-btn" type="button" @click="openCard('tip_data_labeling')">【数据标注】</button>
@@ -26,15 +17,11 @@
 
       <section class="sample-area">
         <div class="sample-box">
-          <p class="sample-title">📝 样本生成区</p>
-          <div class="sample-display">
-            <p v-if="currentSample" class="sample-text">
-              {{ currentSample }}
-            </p>
-            <p v-else class="sample-placeholder">
-              点击下方按钮生成一个样本
-            </p>
-          </div>
+          <p class="sample-title">样本生成区</p>
+          <p class="sample-text">
+            <span v-if="currentSample">{{ currentSample }}</span>
+            <span v-else class="sample-placeholder">点击下方按钮生成一个样本</span>
+          </p>
         </div>
 
         <el-button
@@ -49,45 +36,31 @@
       </section>
 
       <section class="labels">
-        <p class="labels-title">👉 请为样本选择正确的标签：</p>
-        <div class="label-buttons">
-          <el-button
-            round
-            :disabled="isFinished || !currentSample"
-            @click="chooseLabel('hello')"
-          >
-            [你好]
-          </el-button>
-          <el-button
-            round
-            :disabled="isFinished || !currentSample"
-            @click="chooseLabel('spin')"
-          >
-            [转圈]
-          </el-button>
-          <el-button
-            round
-            :disabled="isFinished || !currentSample"
-            @click="chooseLabel('dance')"
-          >
-            [跳个舞]
-          </el-button>
-        </div>
+        <el-button
+          round
+          :disabled="isFinished || !currentSample"
+          @click="chooseLabel('hello')"
+        >
+          [你好]
+        </el-button>
+        <el-button
+          round
+          :disabled="isFinished || !currentSample"
+          @click="chooseLabel('spin')"
+        >
+          [转圈]
+        </el-button>
+        <el-button
+          round
+          :disabled="isFinished || !currentSample"
+          @click="chooseLabel('dance')"
+        >
+          [跳个舞]
+        </el-button>
       </section>
 
-      <div class="examples-hint">
-        <p>💡 示例：</p>
-        <ul>
-          <li>"Hi"、"你好吗"、"嗨" → 【你好】</li>
-          <li>"转个圈"、"自转"、"旋转" → 【转圈】</li>
-          <li>"舞蹈"、"跳一个舞"、"跳舞吧" → 【跳个舞】</li>
-        </ul>
-      </div>
-
       <div v-if="showNextButton" class="action-row">
-        <el-button type="primary" size="large" round @click="goLevel3">
-          [去验收训练成果]
-        </el-button>
+        <el-button type="primary" size="large" round @click="goLevel3">[去验收训练成果]</el-button>
       </div>
     </el-card>
 
@@ -114,104 +87,80 @@ import VideoPlayerModal from '../../components/VideoPlayerModal.vue'
 import { playEnergyStarFly } from '../../utils/energyStarFly'
 
 type LabelKey = 'hello' | 'spin' | 'dance'
+type Round = 1 | 2 | 3
 
 const router = useRouter()
 const gameStore = useGameStore()
 
-const showDecor = ref(false)
+const round = ref<Round>(1)
 const currentSample = ref<string>('')
 const showVideoOverlay = ref(false)
 const rewarded = ref(false)
 const showNextButton = ref(false)
-
+const finished = ref(false)
 const showCardModal = ref(false)
 const activeCardId = ref('tip_data_labeling')
 
-const samplesByLabel: Record<LabelKey, string[]> = {
-  hello: [
-    '你好',
-    'Hi',
-    '嗨',
-    '早上好',
-    '你好吗',
-    '嘿',
-    '大家好',
-    '你们好',
-  ],
-  spin: [
-    '转圈',
-    '转一圈',
-    '自转',
-    '旋转',
-    '转圈圈',
-    '转起来',
-    '360度旋转',
-    '转身',
-  ],
-  dance: [
-    '跳舞',
-    '跳个舞',
-    '舞蹈',
-    '跳起来',
-    '跳一个舞',
-    '跳舞吧',
-    '让我们跳舞',
-    '舞动起来',
-  ],
+const activeStep = computed(() => {
+  // el-steps active is 0-based-ish in UI expectation; it highlights <= active
+  // We'll map: round 1 -> 0, round 2 -> 1, round 3 -> 2, finished -> 3
+  if (finished.value) return 3
+  return round.value - 1
+})
+
+const isFinished = computed(() => finished.value)
+
+const pools: Record<LabelKey, string[]> = {
+  hello: ['你好，小派！', '嗨，小派！'],
+  spin: ['转个圈吧！', '小派转圈！'],
+  dance: ['跳个舞给我看！', '小派跳舞！'],
 }
 
-const labelCounts = ref<Record<LabelKey, number>>({
-  hello: 0,
-  spin: 0,
-  dance: 0,
+const roundTargetLabel = computed<LabelKey>(() => {
+  if (round.value === 1) return 'hello'
+  if (round.value === 2) return 'spin'
+  return 'dance'
 })
 
-const activeStep = computed(() => {
-  const counts = [labelCounts.value.hello, labelCounts.value.spin, labelCounts.value.dance]
-  return Math.max(...counts)
-})
-
-const isFinished = computed(() => {
-  return Object.values(labelCounts.value).every((c) => c >= 3)
-})
+function pickRandom(list: string[]) {
+  return list[Math.floor(Math.random() * list.length)]
+}
 
 function addSample() {
   if (currentSample.value) return
-
-  const randomLabel = (['hello', 'spin', 'dance'] as LabelKey[]).sort(
-    () => Math.random() - 0.5
-  )[0]
-
-  const samples = samplesByLabel[randomLabel]
-  const randomSample = samples[Math.floor(Math.random() * samples.length)]
-  currentSample.value = randomSample
+  const key = roundTargetLabel.value
+  currentSample.value = pickRandom(pools[key])
 }
 
 function chooseLabel(label: LabelKey) {
-  if (!currentSample.value || isFinished.value) return
+  if (!currentSample.value) return
 
-  const correctLabel = Object.entries(samplesByLabel).find(([_, samples]) =>
-    samples.includes(currentSample.value)
-  )?.[0] as LabelKey | undefined
-
-  if (label !== correctLabel) {
-    ElMessage.warning(`标签不对，这句话应该属于【${correctLabel}】`)
+  const target = roundTargetLabel.value
+  if (label !== target) {
+    ElMessage.error('标签不对，再看看这句话更像哪条指令。')
     return
   }
 
-  labelCounts.value[label]++
+  ElMessage.success('标注正确！已加入训练样本。')
   currentSample.value = ''
 
-  ElMessage.success('标签正确！')
+  if (round.value < 3) {
+    round.value = (round.value + 1) as Round
+    return
+  }
 
-  if (isFinished.value) {
+  // 第3轮完成
+  showVideoOverlay.value = true
+}
+
+async function onVideoEnded() {
+  if (!rewarded.value) {
+    rewarded.value = true
+    await playEnergyStarFly()
+    gameStore.addStar()
     showNextButton.value = true
-    if (!rewarded.value) {
-      rewarded.value = true
-      playEnergyStarFly().then(() => {
-        gameStore.addStar()
-      })
-    }
+    finished.value = true
+    ElMessage.success('训练完成！获得 1 颗小派能量星。')
   }
 }
 
@@ -219,20 +168,10 @@ function goLevel3() {
   router.push('/chapter3/level3')
 }
 
-function onVideoEnded() {
-  showVideoOverlay.value = false
-}
-
 function openCard(cardId: string) {
   gameStore.unlockCard(cardId)
   activeCardId.value = cardId
   showCardModal.value = true
-}
-
-if (typeof window !== 'undefined') {
-  window.setTimeout(() => {
-    showDecor.value = true
-  }, 600)
 }
 </script>
 
@@ -244,173 +183,101 @@ if (typeof window !== 'undefined') {
 }
 
 .level-card {
-  width: min(980px, 100%);
+  width: min(1100px, 100%);
   margin: 0 auto;
   border-radius: 16px;
 }
 
-.level-header {
-  position: relative;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 16px;
-}
-
-.level-header h1 {
-  margin: 0;
+h1 {
+  margin: 0 0 12px;
+  text-align: center;
   color: #1f2d3d;
-  flex: 1;
-}
-
-.level-decor {
-  width: 70px;
-  height: 70px;
-  animation: bounce-in 0.6s ease-out;
 }
 
 .tip-line {
-  margin: 12px 0;
-  color: #0f766e;
-  font-size: 14px;
+  margin: 0 0 10px;
+  text-align: center;
+  color: #334155;
+  font-weight: 600;
 }
 
 .term-btn {
-  background: none;
-  border: none;
-  color: #0284c7;
+  border: 0;
+  background: transparent;
+  color: #2563eb;
+  font-weight: 900;
   cursor: pointer;
-  font-weight: 600;
-  padding: 0 2px;
-  text-decoration: underline;
+  padding: 0 4px;
+  border-radius: 8px;
+  animation: term-glow 1.4s ease-in-out infinite;
 }
 
 .term-btn:hover {
-  color: #0369a1;
+  text-decoration: underline;
 }
 
 .progress-wrap {
-  margin: 20px 0;
-  padding: 20px;
-  background: #f0f9ff;
-  border-radius: 8px;
+  margin: 10px 0 18px;
 }
 
 .sample-area {
-  margin: 24px 0;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
+  display: grid;
+  gap: 14px;
+  justify-items: center;
 }
 
 .sample-box {
-  padding: 20px;
-  background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
-  border-radius: 12px;
-  border: 2px dashed #f59e0b;
-  min-height: 120px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+  width: min(760px, 100%);
+  border-radius: 14px;
+  border: 2px dashed #93c5fd;
+  background: #f8fbff;
+  padding: 16px 14px;
+  text-align: center;
 }
 
 .sample-title {
-  margin: 0 0 12px;
-  font-weight: 700;
-  color: #92400e;
-}
-
-.sample-display {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 60px;
+  margin: 0 0 8px;
+  font-weight: 800;
+  color: #334155;
 }
 
 .sample-text {
   margin: 0;
-  font-size: 24px;
-  font-weight: 700;
-  color: #b45309;
-  text-align: center;
-  animation: pop-in 0.4s ease-out;
+  font-size: 22px;
+  font-weight: 800;
+  color: #0f172a;
+  min-height: 34px;
 }
 
 .sample-placeholder {
-  margin: 0;
-  color: #d97706;
-  font-style: italic;
+  color: #94a3b8;
+  font-weight: 600;
+  font-size: 16px;
 }
 
 .labels {
-  margin: 24px 0;
-  padding: 20px;
-  background: #f0fdf4;
-  border-radius: 8px;
-  border-left: 4px solid #10b981;
-}
-
-.labels-title {
-  margin: 0 0 12px;
-  font-weight: 700;
-  color: #065f46;
-}
-
-.label-buttons {
+  margin-top: 18px;
   display: flex;
-  gap: 12px;
+  justify-content: center;
+  gap: 10px;
   flex-wrap: wrap;
 }
 
-.examples-hint {
-  margin: 20px 0;
-  padding: 16px;
-  background: #dbeafe;
-  border-radius: 8px;
-  border-left: 4px solid #0284c7;
-  color: #0c4a6e;
-}
-
-.examples-hint p {
-  margin: 0 0 8px;
-  font-weight: 700;
-}
-
-.examples-hint ul {
-  margin: 0;
-  padding-left: 20px;
-}
-
-.examples-hint li {
-  margin: 4px 0;
-  font-size: 13px;
-}
-
 .action-row {
-  margin-top: 24px;
+  margin-top: 18px;
   display: flex;
   justify-content: center;
 }
 
-@keyframes bounce-in {
-  0% {
-    opacity: 0;
-    transform: translateY(-20px);
-  }
+@keyframes term-glow {
+  0%,
   100% {
-    opacity: 1;
-    transform: translateY(0);
+    box-shadow: 0 0 0 0 rgb(37 99 235 / 0%);
+    background: rgb(37 99 235 / 0%);
   }
-}
-
-@keyframes pop-in {
-  0% {
-    opacity: 0;
-    transform: scale(0.8);
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1);
+  50% {
+    box-shadow: 0 0 0 10px rgb(37 99 235 / 10%);
+    background: rgb(37 99 235 / 8%);
   }
 }
 </style>

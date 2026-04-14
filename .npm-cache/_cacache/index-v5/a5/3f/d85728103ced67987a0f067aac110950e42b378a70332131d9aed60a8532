@@ -1,2 +1,0 @@
-
-04cb625fe62f8941e6957821a94e432a0a8bbbf2	{"key":"make-fetch-happen:request-cache:http://registry.npmmirror.com/fsevents","integrity":null,"time":1776060447557,"size":"262","metadata":{"time":1776060447557,"url":"http://registry.npmmirror.com/fsevents","reqHeaders":{"accept":"application/json"},"resHeaders":{"content-type":"text/html","date":"Mon, 13 Apr 2026 06:07:24 GMT","location":"https://registry.npmmirror.com/fsevents"},"options":{"compress":true},"status":301}}

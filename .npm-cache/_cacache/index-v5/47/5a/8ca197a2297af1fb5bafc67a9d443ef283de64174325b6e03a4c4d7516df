@@ -1,2 +1,0 @@
-
-91b356e27af521a02be1714b3552101f1f695cad	{"key":"make-fetch-happen:request-cache:http://registry.npmmirror.com/@pinia%2fcolada","integrity":null,"time":1776060445017,"size":"262","metadata":{"time":1776060445016,"url":"http://registry.npmmirror.com/@pinia%2fcolada","reqHeaders":{"accept":"application/json"},"resHeaders":{"content-type":"text/html","date":"Mon, 13 Apr 2026 06:07:22 GMT","location":"https://registry.npmmirror.com/@pinia%2fcolada"},"options":{"compress":true},"status":301}}

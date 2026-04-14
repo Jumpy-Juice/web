@@ -1,2 +1,0 @@
-
-6a4554c0ab5838f043f0f83cdf710aa60d20a8e4	{"key":"make-fetch-happen:request-cache:http://registry.npmmirror.com/json5","integrity":null,"time":1776060447771,"size":"262","metadata":{"time":1776060447771,"url":"http://registry.npmmirror.com/json5","reqHeaders":{"accept":"application/json"},"resHeaders":{"content-type":"text/html","date":"Mon, 13 Apr 2026 06:07:25 GMT","location":"https://registry.npmmirror.com/json5"},"options":{"compress":true},"status":301}}

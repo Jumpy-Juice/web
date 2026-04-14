@@ -1,2 +1,0 @@
-
-464c6b1f2fb29a071e7356f8df11ecae10a68bc1	{"key":"make-fetch-happen:request-cache:http://registry.npmmirror.com/local-pkg","integrity":null,"time":1776060447771,"size":"262","metadata":{"time":1776060447771,"url":"http://registry.npmmirror.com/local-pkg","reqHeaders":{"accept":"application/json"},"resHeaders":{"content-type":"text/html","date":"Mon, 13 Apr 2026 06:07:25 GMT","location":"https://registry.npmmirror.com/local-pkg"},"options":{"compress":true},"status":301}}
