@@ -1,2 +1,0 @@
-
-bc5e96386e4d906527c03948157f9ef5f6528d35	{"key":"make-fetch-happen:request-cache:http://registry.npmmirror.com/@types%2fweb-bluetooth","integrity":null,"time":1776060448112,"size":"262","metadata":{"time":1776060448112,"url":"http://registry.npmmirror.com/@types%2fweb-bluetooth","reqHeaders":{"accept":"application/json"},"resHeaders":{"content-type":"text/html","date":"Mon, 13 Apr 2026 06:07:25 GMT","location":"https://registry.npmmirror.com/@types%2fweb-bluetooth"},"options":{"compress":true},"status":301}}

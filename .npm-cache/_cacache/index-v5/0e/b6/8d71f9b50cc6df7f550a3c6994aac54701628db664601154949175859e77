@@ -1,2 +1,0 @@
-
-f5a93cba8392fd6b01057bfd16aacf9e658921d6	{"key":"make-fetch-happen:request-cache:http://registry.npmmirror.com/@floating-ui/dom/-/dom-1.7.6.tgz","integrity":null,"time":1776060294923,"size":"262","metadata":{"time":1776060294923,"url":"http://registry.npmmirror.com/@floating-ui/dom/-/dom-1.7.6.tgz","reqHeaders":{},"resHeaders":{"content-type":"text/html","date":"Mon, 13 Apr 2026 06:04:52 GMT","location":"https://registry.npmmirror.com/@floating-ui/dom/-/dom-1.7.6.tgz"},"options":{"compress":true},"status":301}}

@@ -1,2 +1,0 @@
-
-7c31076b3226281e96f8976a91146a1a20762618	{"key":"make-fetch-happen:request-cache:http://registry.npmmirror.com/lodash-unified","integrity":null,"time":1776060447567,"size":"262","metadata":{"time":1776060447567,"url":"http://registry.npmmirror.com/lodash-unified","reqHeaders":{"accept":"application/json"},"resHeaders":{"content-type":"text/html","date":"Mon, 13 Apr 2026 06:07:24 GMT","location":"https://registry.npmmirror.com/lodash-unified"},"options":{"compress":true},"status":301}}

@@ -1,2 +1,0 @@
-
-9b0e0c61d3ae7eb830b62ab786e16af000d618de	{"key":"make-fetch-happen:request-cache:http://registry.npmmirror.com/jsesc","integrity":null,"time":1776060449198,"size":"262","metadata":{"time":1776060449198,"url":"http://registry.npmmirror.com/jsesc","reqHeaders":{"accept":"application/json"},"resHeaders":{"content-type":"text/html","date":"Mon, 13 Apr 2026 06:07:26 GMT","location":"https://registry.npmmirror.com/jsesc"},"options":{"compress":true},"status":301}}

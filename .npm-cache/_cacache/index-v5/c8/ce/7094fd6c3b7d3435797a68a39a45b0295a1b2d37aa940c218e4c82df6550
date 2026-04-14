@@ -1,2 +1,0 @@
-
-db72b008e702844f93f62546954a7bc96fe2cae2	{"key":"make-fetch-happen:request-cache:http://registry.npmmirror.com/rollup","integrity":null,"time":1776060447558,"size":"262","metadata":{"time":1776060447558,"url":"http://registry.npmmirror.com/rollup","reqHeaders":{"accept":"application/json"},"resHeaders":{"content-type":"text/html","date":"Mon, 13 Apr 2026 06:07:24 GMT","location":"https://registry.npmmirror.com/rollup"},"options":{"compress":true},"status":301}}

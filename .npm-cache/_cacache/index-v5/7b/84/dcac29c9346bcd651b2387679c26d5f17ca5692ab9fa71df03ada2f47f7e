@@ -1,2 +1,0 @@
-
-de2b018965d224d2ad610dd2a7f541e87536b395	{"key":"make-fetch-happen:request-cache:http://registry.npmmirror.com/@vue/compiler-sfc/-/compiler-sfc-3.5.32.tgz","integrity":null,"time":1776060294886,"size":"262","metadata":{"time":1776060294886,"url":"http://registry.npmmirror.com/@vue/compiler-sfc/-/compiler-sfc-3.5.32.tgz","reqHeaders":{},"resHeaders":{"content-type":"text/html","date":"Mon, 13 Apr 2026 06:04:52 GMT","location":"https://registry.npmmirror.com/@vue/compiler-sfc/-/compiler-sfc-3.5.32.tgz"},"options":{"compress":true},"status":301}}
