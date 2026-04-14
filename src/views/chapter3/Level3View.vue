@@ -32,7 +32,7 @@
 
     <VideoPlayerModal
       v-model="showVideoModal"
-      video-src=""
+      video-src="/videos/dance.mp4"
       @video-ended="onVideoEnded"
     />
   </main>

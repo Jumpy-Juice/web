@@ -55,7 +55,7 @@
 
     <VideoPlayerModal
       v-model="showVideoOverlay"
-      video-src=""
+      video-src="/videos/logic.mp4"
       @video-ended="onVideoEnded"
     />
 

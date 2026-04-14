@@ -66,7 +66,7 @@
 
     <VideoPlayerModal
       v-model="showVideoOverlay"
-      video-src=""
+      video-src="/videos/dance.mp4"
       @video-ended="onVideoEnded"
     />
 
