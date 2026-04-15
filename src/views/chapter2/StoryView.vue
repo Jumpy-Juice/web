@@ -1,6 +1,10 @@
 <template>
   <main class="story-view" :class="{ 'dialogue-open': !showNextButton }">
     <el-card class="story-card" shadow="hover">
+      <div class="head-meta">
+        <span>Chapter 2 · Story</span>
+        <span>Listening Module</span>
+      </div>
       <h1>第二章：听见声音，开始分辨</h1>
 
       <div class="robot-wrap">
@@ -137,7 +141,10 @@ function goLevel1() {
 .story-view {
   min-height: 100vh;
   padding: 24px;
-  background: linear-gradient(180deg, #f7fbff 0%, #eef8f3 100%);
+  background:
+    radial-gradient(circle at 10% 2%, rgb(230 181 134 / 18%) 0%, transparent 36%),
+    radial-gradient(circle at 86% 5%, rgb(148 168 233 / 16%) 0%, transparent 34%),
+    linear-gradient(180deg, #f7f4ed 0%, #f3efe5 100%);
 }
 
 /* 底部固定对话条高度约 180–220px，留出空间避免正文被挡、并便于滚到可点区域 */
@@ -149,14 +156,34 @@ function goLevel1() {
   width: min(980px, 100%);
   min-height: 620px;
   margin: 0 auto;
-  border-radius: 16px;
+  border-radius: 20px;
+  padding: 10px 8px 84px;
   padding-bottom: 84px;
+}
+
+.head-meta {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+}
+
+.head-meta span {
+  border-radius: 9999px;
+  border: 1px solid rgb(28 28 28 / 30%);
+  padding: 4px 10px;
+  font-size: 12px;
+  color: rgb(28 28 28 / 78%);
+  background: rgb(28 28 28 / 5%);
 }
 
 h1 {
   margin: 0 0 12px;
   text-align: center;
-  color: #1f2d3d;
+  color: #1c1c1c;
+  font-size: clamp(28px, 4vw, 44px);
+  letter-spacing: -0.8px;
 }
 
 .robot-wrap {
@@ -175,11 +202,11 @@ h1 {
   border-radius: 999px;
   padding: 12px 18px;
   font-size: 15px;
-  font-weight: 700;
+  font-weight: 400;
   cursor: pointer;
-  color: #0f172a;
-  background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
-  box-shadow: 0 6px 18px rgb(245 158 11 / 24%);
+  color: #1c1c1c;
+  background: linear-gradient(135deg, #f3dfce 0%, #edd4bd 100%);
+  box-shadow: rgba(0, 0, 0, 0.12) 0 4px 12px;
   animation: blink 1.2s infinite;
 }
 

@@ -1,6 +1,10 @@
 <template>
   <main class="level4-view">
     <el-card class="level-card" shadow="hover">
+      <div class="head-meta">
+        <span>Chapter 3 · Level 4</span>
+        <span>Debug Room</span>
+      </div>
       <h1>调试室 Debug</h1>
 
       <el-alert
@@ -137,28 +141,74 @@ function openCard(cardId: string) {
 .level4-view {
   min-height: 100vh;
   padding: 24px;
-  background: linear-gradient(180deg, #f7fbff 0%, #eef8f3 100%);
+  background:
+    radial-gradient(circle at 8% -2%, rgb(255 190 120 / 28%) 0%, transparent 36%),
+    radial-gradient(circle at 94% 8%, rgb(123 197 255 / 20%) 0%, transparent 34%),
+    linear-gradient(180deg, #f8edcf 0%, #f8f0dc 100%);
 }
 
 .level-card {
   width: min(980px, 100%);
   margin: 0 auto;
-  border-radius: 16px;
+  border-radius: 26px;
   padding-bottom: 24px;
+  padding-inline: 10px;
+  border: 2px solid #f0e2c8;
+  background:
+    radial-gradient(circle at top right, rgb(255 238 209 / 62%) 0%, transparent 36%),
+    #f7f4ed;
+  box-shadow:
+    0 22px 36px rgb(222 170 88 / 18%),
+    inset 0 0 0 2px rgb(255 255 255 / 42%);
+}
+
+.head-meta {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+
+.head-meta span {
+  border-radius: 9999px;
+  border: 1px solid rgb(206 156 68 / 50%);
+  background: linear-gradient(180deg, #fff3dd 0%, #ffe9c6 100%);
+  padding: 5px 12px;
+  font-size: 12px;
+  color: #9f6a17;
+  font-weight: 700;
 }
 
 h1 {
   margin: 0 0 12px;
   text-align: center;
-  color: #1f2d3d;
+  color: #8f560f;
+  font-size: clamp(28px, 4.4vw, 46px);
+  letter-spacing: -0.8px;
 }
 
 .panel {
   margin-top: 14px;
-  border: 1px solid #dbeafe;
-  border-radius: 12px;
+  border: 2px dashed #f1be73;
+  border-radius: 16px;
   padding: 14px;
-  background: #fff;
+  background: linear-gradient(180deg, #fffdf7 0%, #fff3df 100%);
+  position: relative;
+}
+
+.panel::before {
+  content: 'DEBUG';
+  position: absolute;
+  top: -10px;
+  right: 12px;
+  border-radius: 9999px;
+  background: linear-gradient(180deg, #ff8a65 0%, #ff7043 100%);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 800;
+  padding: 3px 8px;
+  letter-spacing: 0.4px;
 }
 
 .term-row {
@@ -171,7 +221,7 @@ h1 {
 h2 {
   margin: 0 0 10px;
   font-size: 18px;
-  color: #334155;
+  color: #8a601f;
 }
 
 .options {
@@ -183,7 +233,7 @@ h2 {
 .feedback {
   margin: 12px 0 0;
   font-weight: 700;
-  color: #0f172a;
+  color: #8a601f;
   line-height: 1.8;
 }
 

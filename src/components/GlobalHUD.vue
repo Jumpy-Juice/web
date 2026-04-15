@@ -84,20 +84,21 @@ const allCards = [
 <style scoped>
 .global-hud {
   position: fixed;
-  top: 12px;
-  left: 0;
+  top: 14px;
+  right: 14px;
   z-index: 1200;
-  width: 100%;
+  width: auto;
   pointer-events: none;
 }
 
 .hud-card {
   width: fit-content;
-  margin-left: auto;
-  margin-right: 12px;
   border-radius: 999px;
-  border: 1px solid #f7d96f;
-  background: linear-gradient(135deg, #fff8d9 0%, #ffe9a5 100%);
+  border: 1px solid rgb(206 156 68 / 48%);
+  background: linear-gradient(135deg, #fff5dd 0%, #ffe9b7 100%);
+  box-shadow:
+    0 10px 20px rgb(175 123 38 / 22%),
+    inset 0 0 0 2px rgb(255 255 255 / 45%);
   pointer-events: auto;
 }
 
@@ -163,12 +164,16 @@ const allCards = [
 }
 
 .stars-text {
-  font-size: 14px;
+  font-size: 16px;
+  font-weight: 800;
   line-height: 1;
+  color: #8b5a00;
+  letter-spacing: 0.2px;
 }
 
 .knowledge-btn {
   font-weight: 800;
+  min-width: 108px;
 }
 
 .drawer-grid {
@@ -206,6 +211,19 @@ const allCards = [
 }
 
 @media (max-width: 480px) {
+  .global-hud {
+    top: 10px;
+    right: 10px;
+  }
+
+  .stars-col {
+    min-width: 94px;
+  }
+
+  .stars-progress {
+    width: 94px;
+  }
+
   .drawer-grid {
     grid-template-columns: 1fr;
   }

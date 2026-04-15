@@ -1,6 +1,10 @@
 <template>
   <main class="level3-view" :class="{ 'dialogue-open': !showNextButton }">
     <el-card class="level-card" shadow="hover">
+      <div class="head-meta">
+        <span>Chapter 1 · Level 3</span>
+        <span>Behavior Verification</span>
+      </div>
       <h1>第二关：试试看，什么才叫“会听话”</h1>
 
       <p class="intro">
@@ -11,7 +15,10 @@
       <div class="stage-layout">
         <section class="panel">
           <h2>阿啵（已训练）</h2>
-          <div class="abo-placeholder" :class="aboActionClass">
+          <div class="abo-robot-stage">
+            <AboRobot :action="aboActionClass" />
+          </div>
+          <div class="abo-status-card">
             <div class="abo-label">阿啵状态</div>
             <div class="abo-action">{{ aboActionText }}</div>
           </div>
@@ -75,6 +82,7 @@ import { useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
 import DialogueBox from '../../components/DialogueBox.vue'
 import PaiRobot from '../../components/PaiRobot.vue'
+import AboRobot from '../../components/AboRobot.vue'
 import { useGameStore } from '../../stores/gameStore'
 import VideoPlayerModal from '../../components/VideoPlayerModal.vue'
 import { playEnergyStarFly } from '../../utils/energyStarFly'
@@ -102,7 +110,7 @@ const paiClickedSet = ref<Set<Command>>(new Set())
 const dialogueIndex = ref(0)
 
 const aboActionText = ref('等待指令')
-const aboActionClass = ref('')
+const aboActionClass = ref<'' | 'wave' | 'spin' | 'dance'>('')
 
 const dialogues = computed<DialogueItem[]>(() => {
   if (stage.value === 'abo') {
@@ -159,13 +167,13 @@ function handleAboCommand(command: Command) {
 
   if (command === 'hello') {
     aboActionText.value = '听到【你好】→ 挥手'
-    aboActionClass.value = 'action-wave'
+    aboActionClass.value = 'wave'
   } else if (command === 'spin') {
     aboActionText.value = '听到【转圈】→ 旋转'
-    aboActionClass.value = 'action-spin'
+    aboActionClass.value = 'spin'
   } else {
     aboActionText.value = '听到【跳个舞】→ 先旋转，再跳跃'
-    aboActionClass.value = 'action-dance'
+    aboActionClass.value = 'dance'
   }
 
   if (aboClickedSet.value.size === 3) {
@@ -219,28 +227,32 @@ function goEnd() {
 </script>
 
 <style scoped>
-.level3-view { min-height: 100vh; padding: 24px; background: linear-gradient(180deg, #f7fbff 0%, #eef8f3 100%); }
+.level3-view {
+  min-height: 100vh;
+  padding: 24px;
+  background:
+    radial-gradient(circle at 10% 2%, rgb(230 181 134 / 18%) 0%, transparent 36%),
+    radial-gradient(circle at 85% 3%, rgb(148 168 233 / 16%) 0%, transparent 34%),
+    linear-gradient(180deg, #f7f4ed 0%, #f3efe5 100%);
+}
 .level3-view.dialogue-open { padding-bottom: 220px; }
-.level-card { width: min(1100px, 100%); margin: 0 auto; border-radius: 16px; padding-bottom: 72px; }
-h1 { margin: 0 0 12px; text-align: center; color: #1f2d3d; }
-.intro { margin: 0 0 10px; color: #334155; line-height: 1.8; }
+.level-card { width: min(1100px, 100%); margin: 0 auto; border-radius: 20px; padding: 10px 8px 72px; }
+.head-meta { display: flex; justify-content: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+.head-meta span { border-radius: 9999px; border: 1px solid rgb(28 28 28 / 30%); padding: 4px 10px; font-size: 12px; color: rgb(28 28 28 / 78%); background: rgb(28 28 28 / 5%); }
+h1 { margin: 0 0 12px; text-align: center; color: #1c1c1c; font-size: clamp(28px, 4vw, 44px); letter-spacing: -0.8px; }
+.intro { margin: 0 0 10px; color: #5f5f5d; line-height: 1.8; }
 .stage-layout { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
-.panel { border: 1px solid #dbeafe; border-radius: 12px; padding: 12px; background: #fff; }
-h2 { margin: 0 0 10px; font-size: 18px; }
-.abo-placeholder { min-height: 180px; border-radius: 12px; border: 2px dashed #94a3b8; display: grid; place-items: center; text-align: center; color: #334155; background: rgb(191 219 254 / 35%); }
+.panel { border: 1px solid #eceae4; border-radius: 14px; padding: 12px; background: rgb(252 251 248 / 70%); }
+h2 { margin: 0 0 10px; font-size: 18px; color: #1c1c1c; font-weight: 600; }
+.abo-robot-stage { min-height: 230px; border-radius: 14px; border: 2px dashed rgb(28 28 28 / 24%); display: grid; place-items: center; background: linear-gradient(180deg, rgb(252 251 248 / 92%) 0%, rgb(246 242 234 / 92%) 100%); }
+.abo-status-card { margin-top: 8px; border: 1px solid #eceae4; border-radius: 10px; padding: 8px 10px; background: rgb(252 251 248 / 82%); }
 .abo-label { font-weight: 700; }
 .abo-action { margin-top: 6px; font-size: 14px; }
-.action-wave { animation: wave 1.1s ease-in-out infinite; }
-.action-spin { animation: spin 0.9s linear infinite; }
-.action-dance { animation: dance 1s ease-in-out infinite; }
 .pai-wrap { display: flex; justify-content: center; }
-.pai-hint { margin: 4px 0 0; text-align: center; color: #64748b; font-size: 13px; }
+.pai-hint { margin: 4px 0 0; text-align: center; color: #6e6a64; font-size: 13px; }
 .cmd-row { margin-top: 14px; display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
-.knowledge { margin-top: 12px; border-top: 1px dashed #cbd5e1; padding-top: 12px; color: #334155; line-height: 1.8; }
+.knowledge { margin-top: 12px; border-top: 1px dashed rgb(28 28 28 / 28%); padding-top: 12px; color: #5f5f5d; line-height: 1.8; }
 .knowledge ul { margin: 0 0 8px; padding-left: 20px; }
 .action-row { margin-top: 18px; display: flex; justify-content: center; }
-@keyframes wave { 0%,100% { transform: rotate(0deg);} 50% { transform: rotate(6deg);} }
-@keyframes spin { from { transform: rotate(0);} to { transform: rotate(360deg);} }
-@keyframes dance { 0%,100% { transform: translateY(0) rotate(0deg);} 25% { transform: translateY(-8px) rotate(-8deg);} 75% { transform: translateY(-8px) rotate(8deg);} }
 @media (max-width: 900px) { .stage-layout { grid-template-columns: 1fr; } }
 </style>

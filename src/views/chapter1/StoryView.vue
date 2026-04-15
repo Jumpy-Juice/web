@@ -1,7 +1,12 @@
 <template>
   <main class="story-view">
+    <div class="backdrop"></div>
     <el-card class="story-card" shadow="hover">
       <template v-if="currentStep === 1">
+        <div class="head-meta">
+          <span>Chapter 1</span>
+          <span>Story Sequence</span>
+        </div>
         <h1>小派到家啦！</h1>
         <div class="gift-box"></div>
         <p class="gift-tip">桌子上放着一个包装盒，盒子上写着：“你的 AI 宠物伙伴已到家，请唤醒它吧！”</p>
@@ -15,6 +20,10 @@
       </template>
 
       <template v-else-if="currentStep === 2">
+        <div class="head-meta">
+          <span>Chapter 1</span>
+          <span>Why Not Responding</span>
+        </div>
         <h1>小派为什么还不会“听话”？</h1>
         <div class="robot-wrap">
           <PaiRobot mode="initial" />
@@ -49,6 +58,10 @@
       </template>
 
       <template v-else>
+        <div class="head-meta">
+          <span>Chapter 1</span>
+          <span>Mission Start</span>
+        </div>
         <h1>你的任务开始啦！</h1>
 
         <p class="narration"><strong>小芽：</strong>所以，小派不是一开始就什么都会，它需要一位“小训练师”来教它慢慢成长。</p>
@@ -97,19 +110,53 @@ function goLevel1() {
   padding: 24px;
   display: grid;
   place-items: center;
-  background: linear-gradient(180deg, #f7fbff 0%, #eef8f3 100%);
+  background:
+    radial-gradient(circle at 14% 0%, rgb(229 181 136 / 20%) 0%, transparent 38%),
+    radial-gradient(circle at 84% 6%, rgb(143 165 235 / 18%) 0%, transparent 36%),
+    linear-gradient(180deg, #f7f4ed 0%, #f3efe5 100%);
+  position: relative;
+}
+
+.backdrop {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: linear-gradient(rgb(28 28 28 / 4%) 1px, transparent 1px);
+  background-size: 100% 26px;
+  mask-image: linear-gradient(to bottom, rgb(0 0 0 / 65%), transparent 90%);
 }
 
 .story-card {
   width: min(980px, 100%);
   min-height: 620px;
-  border-radius: 18px;
+  border-radius: 20px;
+  padding: 10px 6px;
+  position: relative;
+}
+
+.head-meta {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+}
+
+.head-meta span {
+  border: 1px solid rgb(28 28 28 / 30%);
+  border-radius: 9999px;
+  font-size: 12px;
+  color: rgb(28 28 28 / 78%);
+  padding: 4px 11px;
+  background: rgb(28 28 28 / 5%);
 }
 
 h1 {
-  margin: 0 0 14px;
+  margin: 0 0 12px;
   text-align: center;
-  color: #1f2d3d;
+  color: #1c1c1c;
+  font-size: clamp(28px, 4.2vw, 46px);
+  letter-spacing: -0.9px;
 }
 
 .gift-box {
@@ -117,9 +164,12 @@ h1 {
   height: 180px;
   margin: 10px auto 14px;
   border-radius: 16px;
-  background: linear-gradient(135deg, #fecaca 0%, #fca5a5 100%);
-  border: 4px solid #ef4444;
+  background: linear-gradient(135deg, #f3d4be 0%, #ecb995 100%);
+  border: 3px solid rgb(28 28 28 / 36%);
   position: relative;
+  box-shadow:
+    0 10px 24px rgb(28 28 28 / 12%),
+    inset 0 0.5px 0 rgb(255 255 255 / 55%);
 }
 
 .gift-box::before,
@@ -148,13 +198,17 @@ h1 {
 .quote,
 .summary-line {
   margin: 0 0 10px;
-  color: #303133;
+  color: #5f5f5d;
   line-height: 1.85;
 }
 
 .quote {
-  color: #1e3a8a;
-  font-weight: 600;
+  color: #1c1c1c;
+  font-weight: 400;
+  border-left: 3px solid rgb(28 28 28 / 28%);
+  padding-left: 10px;
+  background: linear-gradient(90deg, rgb(28 28 28 / 5%) 0%, transparent 100%);
+  border-radius: 8px;
 }
 
 .robot-wrap {
@@ -172,18 +226,22 @@ h1 {
 
 .sub-title {
   margin: 0 0 6px;
-  color: #334155;
-  font-weight: 700;
+  color: #1c1c1c;
+  font-weight: 600;
 }
 
 ul {
   margin: 0;
   padding-left: 20px;
+  border: 1px solid #eceae4;
+  border-radius: 12px;
+  padding: 8px 12px 8px 30px;
+  background: rgb(252 251 248 / 68%);
 }
 
 li {
   margin: 6px 0;
-  color: #0f766e;
+  color: #5f5f5d;
 }
 
 .task-list {

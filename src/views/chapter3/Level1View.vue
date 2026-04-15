@@ -1,6 +1,10 @@
 <template>
   <main class="level1-view" :class="{ 'dialogue-open': showDialogue }">
     <el-card class="level-card" shadow="hover">
+      <div class="head-meta">
+        <span>Chapter 3 · Level 1</span>
+        <span>Rule Mapping</span>
+      </div>
       <h1>规则连线：指令 → 动作</h1>
       <p class="tip-line">
         小提示：把“你说的话”变成“要做什么”，这一步叫
@@ -310,7 +314,10 @@ onBeforeUnmount(() => {
 .level1-view {
   min-height: 100vh;
   padding: 24px;
-  background: linear-gradient(180deg, #f7fbff 0%, #eef8f3 100%);
+  background:
+    radial-gradient(circle at 6% -2%, rgb(255 190 120 / 28%) 0%, transparent 36%),
+    radial-gradient(circle at 92% 8%, rgb(130 194 255 / 20%) 0%, transparent 34%),
+    linear-gradient(180deg, #f8edcf 0%, #f8f0dc 100%);
 }
 
 .level1-view.dialogue-open {
@@ -320,27 +327,55 @@ onBeforeUnmount(() => {
 .level-card {
   width: min(1100px, 100%);
   margin: 0 auto;
-  border-radius: 16px;
+  border-radius: 26px;
   padding-bottom: 72px;
+  padding-inline: 10px;
+  border: 2px solid #f0e2c8;
+  background:
+    radial-gradient(circle at 100% 0%, rgb(255 239 209 / 62%) 0%, transparent 38%),
+    #f7f4ed;
+  box-shadow:
+    0 22px 36px rgb(222 170 88 / 18%),
+    inset 0 0 0 2px rgb(255 255 255 / 42%);
+}
+
+.head-meta {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+
+.head-meta span {
+  border-radius: 9999px;
+  border: 1px solid rgb(206 156 68 / 50%);
+  background: linear-gradient(180deg, #fff3dd 0%, #ffe9c6 100%);
+  padding: 5px 12px;
+  font-size: 12px;
+  color: #9f6a17;
+  font-weight: 700;
 }
 
 h1 {
   margin: 0 0 14px;
   text-align: center;
-  color: #1f2d3d;
+  color: #8f560f;
+  font-size: clamp(28px, 4.5vw, 46px);
+  letter-spacing: -0.8px;
 }
 
 .tip-line {
   margin: 0 0 12px;
   text-align: center;
-  color: #334155;
+  color: #8a601f;
   font-weight: 600;
 }
 
 .term-btn {
   border: 0;
   background: transparent;
-  color: #2563eb;
+  color: #d97706;
   font-weight: 900;
   cursor: pointer;
   padding: 0 4px;
@@ -396,9 +431,9 @@ h2 {
 }
 
 .card-list {
-  border: 1px solid #dbeafe;
-  border-radius: 12px;
-  background: #f8fbff;
+  border: 2px dashed #f1be73;
+  border-radius: 16px;
+  background: linear-gradient(180deg, #fffdf7 0%, #fff3df 100%);
   padding: 12px;
   display: flex;
   flex-direction: column;
@@ -407,31 +442,32 @@ h2 {
 
 .rule-card {
   width: 100%;
-  border: 1px solid #cbd5e1;
-  border-radius: 12px;
-  background: #fff;
+  border: 1px solid #f0d9aa;
+  border-radius: 14px;
+  background: linear-gradient(180deg, #fffdfa 0%, #fffaef 100%);
   padding: 12px;
   font-size: 16px;
-  font-weight: 800;
-  color: #0f172a;
+  font-weight: 700;
+  color: #7a4d12;
   text-align: left;
   cursor: pointer;
   transition: transform 0.08s ease, border-color 0.2s ease, background 0.2s ease;
 }
 
 .rule-card:hover:not(:disabled) {
-  border-color: #60a5fa;
+  border-color: #e8ab44;
+  transform: translateY(-1px);
 }
 
 .rule-card.selected {
-  border-color: #2563eb;
-  background: #eff6ff;
+  border-color: #ec9f26;
+  background: linear-gradient(180deg, #fff3d7 0%, #ffe9c0 100%);
 }
 
 .rule-card.locked {
-  border-color: #22c55e;
-  background: #f0fdf4;
-  color: #166534;
+  border-color: #6bbf7b;
+  background: linear-gradient(180deg, #ecfff0 0%, #ddf7e3 100%);
+  color: #2d6b39;
   cursor: not-allowed;
 }
 
@@ -447,14 +483,14 @@ h2 {
 
 .pairs {
   margin-top: 14px;
-  border-top: 1px dashed #cbd5e1;
+  border-top: 2px dashed #efcc8a;
   padding-top: 14px;
 }
 
 .pairs-title {
   margin: 0 0 8px;
   font-weight: 800;
-  color: #334155;
+  color: #8a601f;
 }
 
 .pairs-empty {
@@ -480,7 +516,7 @@ h2 {
   background: #f0fdf4;
   border: 1px solid #22c55e;
   color: #166534;
-  font-weight: 800;
+  font-weight: 700;
 }
 
 .pair-line {

@@ -1,6 +1,10 @@
 <template>
   <main class="level1-view">
     <el-card class="level-card" shadow="hover">
+      <div class="head-meta">
+        <span>Chapter 2 · Level 1</span>
+        <span>Pipeline Ordering</span>
+      </div>
       <h1>把声音理解流程按正确顺序排好吧</h1>
 
       <section class="board">
@@ -186,19 +190,42 @@ watch(showTipModal, async (open) => {
 .level1-view {
   min-height: 100vh;
   padding: 24px;
-  background: linear-gradient(180deg, #f7fbff 0%, #eef8f3 100%);
+  background:
+    radial-gradient(circle at 10% 2%, rgb(230 181 134 / 18%) 0%, transparent 36%),
+    radial-gradient(circle at 86% 5%, rgb(148 168 233 / 16%) 0%, transparent 34%),
+    linear-gradient(180deg, #f7f4ed 0%, #f3efe5 100%);
 }
 
 .level-card {
   width: min(1100px, 100%);
   margin: 0 auto;
-  border-radius: 16px;
+  border-radius: 20px;
+  padding: 10px 8px;
+}
+
+.head-meta {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+}
+
+.head-meta span {
+  border-radius: 9999px;
+  border: 1px solid rgb(28 28 28 / 30%);
+  padding: 4px 10px;
+  font-size: 12px;
+  color: rgb(28 28 28 / 78%);
+  background: rgb(28 28 28 / 5%);
 }
 
 h1 {
   margin: 0 0 14px;
   text-align: center;
-  color: #1f2d3d;
+  color: #1c1c1c;
+  font-size: clamp(28px, 4vw, 42px);
+  letter-spacing: -0.8px;
 }
 
 .board {
@@ -210,13 +237,15 @@ h1 {
 h2 {
   margin: 0 0 8px;
   font-size: 18px;
+  color: #1c1c1c;
+  font-weight: 600;
 }
 
 .card-list {
   min-height: 340px;
-  border: 1px solid #dbeafe;
+  border: 1px solid #eceae4;
   border-radius: 12px;
-  background: #f8fbff;
+  background: rgb(252 251 248 / 70%);
   padding: 12px;
   display: flex;
   flex-direction: column;
@@ -224,12 +253,12 @@ h2 {
 }
 
 .step-card {
-  border: 1px solid #bfdbfe;
+  border: 1px solid #eceae4;
   border-radius: 10px;
-  background: #fff;
+  background: #fcfbf8;
   padding: 12px;
-  font-weight: 700;
-  color: #1e3a8a;
+  font-weight: 400;
+  color: #1c1c1c;
   cursor: grab;
 }
 
@@ -245,9 +274,9 @@ h2 {
 
 .slot {
   min-height: 74px;
-  border: 2px dashed #93c5fd;
+  border: 2px dashed rgb(28 28 28 / 24%);
   border-radius: 10px;
-  background: #f8fbff;
+  background: rgb(252 251 248 / 70%);
   padding: 10px;
 }
 
@@ -258,12 +287,12 @@ h2 {
 }
 
 .slot-card {
-  border: 1px solid #86efac;
-  background: #f0fdf4;
-  color: #166534;
+  border: 1px solid rgb(34 116 61 / 40%);
+  background: rgb(209 236 217 / 85%);
+  color: #174428;
   border-radius: 8px;
   padding: 8px 10px;
-  font-weight: 700;
+  font-weight: 400;
 }
 
 .slot-placeholder {

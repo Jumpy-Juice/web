@@ -1,6 +1,10 @@
 <template>
   <main class="story-view" :class="{ 'dialogue-open': !showNextButton }">
     <el-card class="story-card" shadow="hover">
+      <div class="head-meta">
+        <span>Chapter 3 · Story</span>
+        <span>Trainer Journey</span>
+      </div>
       <h1>第三章：训练小派“听懂并行动”</h1>
 
       <div class="robot-wrap">
@@ -104,7 +108,12 @@ onBeforeUnmount(() => {
 .story-view {
   min-height: 100vh;
   padding: 24px;
-  background: linear-gradient(180deg, #f7fbff 0%, #eef8f3 100%);
+  background:
+    radial-gradient(circle at 8% -2%, rgb(255 177 102 / 28%) 0%, transparent 38%),
+    radial-gradient(circle at 94% 10%, rgb(112 184 255 / 22%) 0%, transparent 35%),
+    linear-gradient(180deg, #f8edcf 0%, #f8f0dc 100%);
+  position: relative;
+  overflow: hidden;
 }
 
 .story-view.dialogue-open {
@@ -115,14 +124,43 @@ onBeforeUnmount(() => {
   width: min(980px, 100%);
   min-height: 620px;
   margin: 0 auto;
-  border-radius: 16px;
+  border-radius: 26px;
   padding-bottom: 84px;
+  padding-inline: 10px;
+  background:
+    radial-gradient(circle at top right, rgb(255 232 197 / 70%) 0%, transparent 34%),
+    #f7f4ed;
+  border: 2px solid #f0e2c8;
+  box-shadow:
+    0 20px 36px rgb(222 170 88 / 20%),
+    inset 0 0 0 2px rgb(255 255 255 / 45%);
+}
+
+.head-meta {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+
+.head-meta span {
+  border-radius: 9999px;
+  border: 1px solid rgb(206 156 68 / 50%);
+  background: linear-gradient(180deg, #fff3dd 0%, #ffe9c6 100%);
+  padding: 5px 12px;
+  font-size: 12px;
+  color: #9f6a17;
+  font-weight: 700;
 }
 
 h1 {
   margin: 0 0 12px;
   text-align: center;
-  color: #1f2d3d;
+  color: #8f560f;
+  font-size: clamp(28px, 4.5vw, 48px);
+  letter-spacing: -0.8px;
+  text-shadow: 0 2px 0 rgb(255 255 255 / 65%);
 }
 
 .robot-wrap {
@@ -133,16 +171,31 @@ h1 {
 .status-box {
   width: min(620px, 100%);
   margin: 10px auto 0;
-  border-radius: 12px;
-  border: 1px solid #fecaca;
-  background: linear-gradient(180deg, #fff 0%, #fef2f2 100%);
+  border-radius: 18px;
+  border: 2px dashed #f1be73;
+  background: linear-gradient(180deg, #fffdf7 0%, #fff3df 100%);
   padding: 12px 14px;
+  position: relative;
+}
+
+.status-box::after {
+  content: 'NEW';
+  position: absolute;
+  top: -10px;
+  right: 12px;
+  border-radius: 9999px;
+  background: linear-gradient(180deg, #ff9b6e 0%, #ff7f50 100%);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 800;
+  padding: 3px 8px;
+  letter-spacing: 0.4px;
 }
 
 .status-title {
   margin: 0 0 6px;
   font-weight: 800;
-  color: #991b1b;
+  color: #a76612;
 }
 
 .action-row {

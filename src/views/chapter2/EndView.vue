@@ -1,6 +1,10 @@
 <template>
   <main class="end-view">
     <el-card class="end-card" shadow="hover">
+      <div class="head-meta">
+        <span>Chapter 2</span>
+        <span>Growth Summary</span>
+      </div>
       <h1>小派成长记录 02</h1>
 
       <section class="summary-block">
@@ -56,19 +60,28 @@ function goChapter3() {
 .end-view {
   min-height: 100vh;
   padding: 24px;
-  background: linear-gradient(180deg, #f7fbff 0%, #eef8f3 100%);
+  background:
+    radial-gradient(circle at 10% 2%, rgb(230 181 134 / 18%) 0%, transparent 36%),
+    radial-gradient(circle at 86% 5%, rgb(148 168 233 / 16%) 0%, transparent 34%),
+    linear-gradient(180deg, #f7f4ed 0%, #f3efe5 100%);
 }
 
 .end-card {
   width: min(980px, 100%);
   margin: 0 auto;
-  border-radius: 16px;
+  border-radius: 20px;
+  padding: 10px 8px;
 }
+
+.head-meta { display: flex; justify-content: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+.head-meta span { border-radius: 9999px; border: 1px solid rgb(28 28 28 / 30%); padding: 4px 10px; font-size: 12px; color: rgb(28 28 28 / 78%); background: rgb(28 28 28 / 5%); }
 
 h1 {
   margin: 0 0 12px;
   text-align: center;
-  color: #1f2d3d;
+  color: #1c1c1c;
+  font-size: clamp(28px, 4vw, 42px);
+  letter-spacing: -0.8px;
 }
 
 .summary-block {
@@ -79,8 +92,8 @@ h1 {
 .summary-title {
   margin: 0 0 8px;
   font-size: 18px;
-  font-weight: 700;
-  color: #334155;
+  font-weight: 600;
+  color: #1c1c1c;
 }
 
 .summary-list {
@@ -90,8 +103,8 @@ h1 {
 
 .summary-list li {
   margin: 8px 0;
-  color: #0f766e;
-  font-weight: 600;
+  color: #5f5f5d;
+  font-weight: 400;
   line-height: 1.8;
 }
 
@@ -104,20 +117,23 @@ h1 {
 .reward-box {
   max-width: 860px;
   margin: 6px auto 0;
-  border-top: 1px dashed #cbd5e1;
+  border-top: 1px dashed rgb(28 28 28 / 28%);
   padding-top: 10px;
+  background: rgb(252 251 248 / 72%);
+  border-radius: 12px;
+  padding-inline: 12px;
 }
 
 .reward-title {
   margin: 0 0 6px;
-  font-weight: 800;
-  color: #334155;
+  font-weight: 600;
+  color: #1c1c1c;
 }
 
 .reward-line {
   margin: 6px 0;
-  color: #92400e;
-  font-weight: 700;
+  color: #5f5f5d;
+  font-weight: 400;
 }
 
 .action-row {

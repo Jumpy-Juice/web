@@ -1,6 +1,10 @@
 <template>
   <main class="end-view">
     <el-card class="end-card" shadow="hover">
+      <div class="head-meta">
+        <span>Chapter 3 · Finale</span>
+        <span>Evolution Complete</span>
+      </div>
       <h1>终极成长记录：唤醒成功！</h1>
       <p class="record-id">小派成长记录 03</p>
 
@@ -116,15 +120,44 @@ function openCard(cardId: string) {
 .end-view {
   min-height: 100vh;
   padding: 24px;
-  background: radial-gradient(circle at 30% 10%, #fff7ed 0%, #f7fbff 35%, #eef8f3 100%);
+  background:
+    radial-gradient(circle at 6% -2%, rgb(255 190 120 / 32%) 0%, transparent 34%),
+    radial-gradient(circle at 94% 8%, rgb(123 197 255 / 24%) 0%, transparent 34%),
+    radial-gradient(circle at 50% 100%, rgb(255 168 99 / 14%) 0%, transparent 42%),
+    linear-gradient(180deg, #f8edcf 0%, #f8f0dc 100%);
 }
 
 .end-card {
   width: min(1100px, 100%);
   margin: 0 auto;
-  border-radius: 18px;
+  border-radius: 28px;
   position: relative;
   overflow: hidden;
+  border: 2px solid #f0e2c8;
+  background:
+    radial-gradient(circle at top right, rgb(255 238 209 / 68%) 0%, transparent 34%),
+    #f7f4ed;
+  box-shadow:
+    0 24px 40px rgb(222 170 88 / 24%),
+    inset 0 0 0 2px rgb(255 255 255 / 45%);
+}
+
+.head-meta {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+
+.head-meta span {
+  border-radius: 9999px;
+  border: 1px solid rgb(206 156 68 / 50%);
+  background: linear-gradient(180deg, #fff3dd 0%, #ffe9c6 100%);
+  padding: 5px 12px;
+  font-size: 12px;
+  color: #9f6a17;
+  font-weight: 700;
 }
 
 h1 {
@@ -132,7 +165,7 @@ h1 {
   text-align: center;
   font-size: 34px;
   font-weight: 900;
-  color: #1f2d3d;
+  color: #8f560f;
   letter-spacing: 1px;
 }
 
@@ -141,7 +174,7 @@ h1 {
   text-align: center;
   font-size: 15px;
   font-weight: 800;
-  color: #0f766e;
+  color: #b87820;
   letter-spacing: 1px;
 }
 
@@ -154,7 +187,7 @@ h1 {
 
 .summary-list li {
   margin: 10px 0;
-  color: #0f766e;
+  color: #8a601f;
   font-weight: 700;
   font-size: 16px;
 }
@@ -230,7 +263,7 @@ h1 {
 .reward-text {
   margin: 10px 0 0;
   font-weight: 900;
-  color: #92400e;
+  color: #b26e1b;
   text-align: center;
 }
 
@@ -240,7 +273,7 @@ h1 {
   text-align: center;
   font-size: 18px;
   font-weight: 700;
-  color: #1f2d3d;
+  color: #8f560f;
 }
 
 .assistant-hint {
@@ -249,13 +282,13 @@ h1 {
   text-align: center;
   font-size: 15px;
   font-weight: 600;
-  color: #334155;
+  color: #8a601f;
   line-height: 1.65;
 }
 
 .engineer-box {
   margin-top: 16px;
-  border-top: 1px dashed rgb(148 163 184 / 60%);
+  border-top: 2px dashed #efcc8a;
   padding-top: 14px;
 }
 
@@ -263,7 +296,7 @@ h1 {
   margin: 0 0 10px;
   text-align: center;
   font-size: 18px;
-  color: #334155;
+  color: #8a601f;
 }
 
 .card-grid {
@@ -277,8 +310,8 @@ h1 {
 .mini-card {
   text-align: left;
   border-radius: 14px;
-  border: 1px solid rgb(59 130 246 / 20%);
-  background: linear-gradient(135deg, rgb(224 242 254 / 60%) 0%, #fff 60%);
+  border: 1px solid #f0d9aa;
+  background: linear-gradient(135deg, rgb(255 246 229 / 86%) 0%, #fff9ee 60%);
   padding: 12px;
   cursor: pointer;
 }
@@ -292,7 +325,7 @@ h1 {
 
 .mini-title {
   font-weight: 900;
-  color: #0f172a;
+  color: #8a601f;
 }
 
 .mini-card.locked .mini-title {

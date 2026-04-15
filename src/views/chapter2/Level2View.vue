@@ -1,6 +1,10 @@
 <template>
   <main class="level2-view">
     <el-card class="quiz-card" shadow="hover">
+      <div class="head-meta">
+        <span>Chapter 2 · Level 2</span>
+        <span>Error Diagnosis</span>
+      </div>
       <h1>第二关：为什么会听错，怎么帮它改正？</h1>
 
       <p class="narration">
@@ -218,39 +222,62 @@ watch(showTipModal, async (open) => {
 .level2-view {
   min-height: 100vh;
   padding: 24px;
-  background: linear-gradient(180deg, #f7fbff 0%, #eef8f3 100%);
+  background:
+    radial-gradient(circle at 10% 2%, rgb(230 181 134 / 18%) 0%, transparent 36%),
+    radial-gradient(circle at 86% 5%, rgb(148 168 233 / 16%) 0%, transparent 34%),
+    linear-gradient(180deg, #f7f4ed 0%, #f3efe5 100%);
 }
 
 .quiz-card {
   width: min(980px, 100%);
   margin: 0 auto;
-  border-radius: 16px;
+  border-radius: 20px;
+  padding: 10px 8px;
+}
+
+.head-meta {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+}
+
+.head-meta span {
+  border-radius: 9999px;
+  border: 1px solid rgb(28 28 28 / 30%);
+  padding: 4px 10px;
+  font-size: 12px;
+  color: rgb(28 28 28 / 78%);
+  background: rgb(28 28 28 / 5%);
 }
 
 h1 {
   margin: 0 0 14px;
   text-align: center;
-  color: #1f2d3d;
+  color: #1c1c1c;
   line-height: 1.5;
+  font-size: clamp(28px, 4vw, 42px);
+  letter-spacing: -0.8px;
 }
 
 .narration,
 .guide-text {
   margin: 0 0 10px;
-  color: #334155;
+  color: #5f5f5d;
   line-height: 1.8;
 }
 
 .question-line {
   margin: 0 0 12px;
-  font-weight: 600;
-  color: #334155;
+  font-weight: 400;
+  color: #1c1c1c;
 }
 
 h2 {
   margin: 0 0 8px;
   font-size: 20px;
-  color: #1e3a8a;
+  color: #1c1c1c;
 }
 
 .options {
@@ -260,14 +287,14 @@ h2 {
 }
 
 .option-btn {
-  border: 1px solid #cbd5e1;
+  border: 1px solid #eceae4;
   border-radius: 12px;
-  background: #fff;
-  color: #0f172a;
+  background: #fcfbf8;
+  color: #1c1c1c;
   min-height: 56px;
   padding: 10px 12px;
   font-size: 16px;
-  font-weight: 700;
+  font-weight: 400;
   text-align: left;
   display: flex;
   align-items: center;
@@ -276,7 +303,7 @@ h2 {
 }
 
 .option-btn:hover:not(:disabled) {
-  border-color: #60a5fa;
+  border-color: rgb(28 28 28 / 40%);
 }
 
 .option-btn:disabled {
@@ -285,15 +312,15 @@ h2 {
 }
 
 .option-btn.correct {
-  border-color: #22c55e;
-  background: #f0fdf4;
-  color: #166534;
+  border-color: rgb(34 116 61 / 45%);
+  background: rgb(209 236 217 / 85%);
+  color: #174428;
 }
 
 .option-btn.wrong {
-  border-color: #ef4444;
-  background: #fef2f2;
-  color: #991b1b;
+  border-color: rgb(155 56 56 / 50%);
+  background: rgb(241 203 203 / 78%);
+  color: #7c2626;
 }
 
 .option-btn.shake-error {
@@ -311,14 +338,14 @@ h2 {
 
 .summary-box {
   margin-top: 16px;
-  border-top: 1px dashed #cbd5e1;
+  border-top: 1px dashed rgb(28 28 28 / 28%);
   padding-top: 12px;
 }
 
 .summary-title,
 .knowledge-line {
   margin: 0 0 8px;
-  color: #334155;
+  color: #5f5f5d;
   line-height: 1.8;
 }
 
@@ -329,8 +356,8 @@ h2 {
 
 .summary-box li {
   margin: 6px 0;
-  color: #0f766e;
-  font-weight: 600;
+  color: #5f5f5d;
+  font-weight: 400;
 }
 
 .action-row {
