@@ -53,12 +53,6 @@
       </div>
     </el-card>
 
-    <VideoPlayerModal
-      v-model="showVideoOverlay"
-      video-src="/videos/logic.mp4"
-      @video-ended="onVideoEnded"
-    />
-
     <KnowledgeCardModal
       v-model="showTipModal"
       :card-id="activeCardId"
@@ -72,7 +66,6 @@ import { useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
 import { useGameStore } from '../../stores/gameStore'
 import KnowledgeCardModal from '../../components/KnowledgeCardModal.vue'
-import VideoPlayerModal from '../../components/VideoPlayerModal.vue'
 import { playEnergyStarFly } from '../../utils/energyStarFly'
 
 interface StepCard {
@@ -93,7 +86,6 @@ const draggingId = ref<string | null>(null)
 const hintText = ref('')
 const shakingSlot = ref<number | null>(null)
 const wrongCardId = ref('')
-const showVideoOverlay = ref(false)
 const rewarded = ref(false)
 const showNextButton = ref(false)
 const showTipModal = ref(false)
@@ -125,7 +117,7 @@ function onDragStart(cardId: string) {
   draggingId.value = cardId
 }
 
-function onDrop(targetOrder: number) {
+async function onDrop(targetOrder: number) {
   if (!draggingId.value) return
 
   const card = cards.value.find((c) => c.id === draggingId.value)
@@ -152,7 +144,7 @@ function onDrop(targetOrder: number) {
   ElMessage.success('放置正确！')
 
   if (isCompleted.value) {
-    showVideoOverlay.value = true
+    await completeLevel()
   }
 }
 
@@ -163,7 +155,9 @@ function getHint(order: number) {
   return '最后一步，把找到的意思变成文字或者动作表现出来！'
 }
 
-async function onVideoEnded() {
+async function completeLevel() {
+  if (rewarded.value) return
+
   // 通关 -> 触发卡片 -> 关闭后再飞星+加星
   activeCardId.value = 'tip_what_is_asr'
   gameStore.unlockCard(activeCardId.value)

@@ -30,11 +30,6 @@
       </template>
     </el-dialog>
 
-    <VideoPlayerModal
-      v-model="showVideoModal"
-      video-src="/videos/dance.mp4"
-      @video-ended="onVideoEnded"
-    />
   </main>
 </template>
 
@@ -44,7 +39,6 @@ import { useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
 import PaiRobot from '../../components/PaiRobot.vue'
 import { useGameStore } from '../../stores/gameStore'
-import VideoPlayerModal from '../../components/VideoPlayerModal.vue'
 import { playEnergyStarFly } from '../../utils/energyStarFly'
 
 type Command = 'hello' | 'spin' | 'dance'
@@ -58,7 +52,6 @@ const showJudge = ref(false)
 const locked = ref(false)
 const pendingCommand = ref<Command | null>(null)
 
-const showVideoModal = ref(false)
 const showNextButton = ref(false)
 const rewarded = ref(false)
 
@@ -118,7 +111,7 @@ function judge(isYes: boolean) {
     // dance：正确答案应为“不对”
     if (!isYes) {
       ElMessage.success('你观察得很仔细！它少做了一个动作。看来我们需要去调试室检查一下原因。')
-      showVideoModal.value = true
+      void completeLevel()
     } else {
       ElMessage.error('再看清楚：它只跳了一下，并没有先旋转再跳。')
     }
@@ -129,7 +122,7 @@ function judge(isYes: boolean) {
   locked.value = false
 }
 
-async function onVideoEnded() {
+async function completeLevel() {
   if (!rewarded.value) {
     rewarded.value = true
     await playEnergyStarFly()

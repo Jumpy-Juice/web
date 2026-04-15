@@ -61,7 +61,6 @@
       @next="nextDialogue"
     />
 
-    <VideoPlayerModal v-model="showVideoModal" video-src="" @video-ended="onVideoEnded" />
     <VideoPlayerModal
       v-model="showVideoModal"
       video-src="/videos/logic.mp4"

@@ -48,11 +48,10 @@
       </div>
     </el-card>
 
-    <VideoPlayerModal v-model="showVideoModal" video-src="" @video-ended="onVideoEnded" />
-    <VideoPlayerModal 
-      v-model="showVideoModal" 
-      video-src="/videos/life.mp4" 
-      @video-ended="onVideoEnded" 
+    <VideoPlayerModal
+      v-model="showVideoModal"
+      video-src="/videos/life.mp4"
+      @video-ended="onVideoEnded"
     />
   </main>
 </template>
