@@ -1,0 +1,75 @@
+/**
+ * 第三章页面共享视觉：背景光晕、卡片层次、内边距。
+ * 在 <main> 上添加 class="chapter3-page"（可与其余 class 并存）。
+ */
+
+.chapter3-page {
+  --ch3-bg-top: #fff6e0;
+  --ch3-bg-mid: #fffbeb;
+  --ch3-bg-bottom: #fff7ed;
+  --ch3-ink: #0f172a;
+  --ch3-border-soft: rgba(148, 163, 184, 0.32);
+  --ch3-card-elev:
+    0 1px 2px rgba(15, 23, 42, 0.04),
+    0 14px 36px rgba(15, 23, 42, 0.07);
+  --ch3-radius-xl: 20px;
+
+  min-height: 100vh;
+  padding: 24px;
+  box-sizing: border-box;
+  background:
+    radial-gradient(ellipse 90% 60% at 50% -18%, rgba(251, 191, 36, 0.28), transparent 58%),
+    radial-gradient(ellipse 55% 45% at 100% 30%, rgba(125, 211, 252, 0.14), transparent 52%),
+    radial-gradient(ellipse 50% 40% at 0% 70%, rgba(167, 139, 250, 0.1), transparent 50%),
+    linear-gradient(180deg, var(--ch3-bg-top) 0%, var(--ch3-bg-mid) 48%, var(--ch3-bg-bottom) 100%);
+}
+
+.chapter3-page .story-card,
+.chapter3-page .level-card,
+.chapter3-page .end-card {
+  border-radius: var(--ch3-radius-xl) !important;
+  border: 1px solid var(--ch3-border-soft) !important;
+  box-shadow: var(--ch3-card-elev) !important;
+  background: rgba(255, 255, 255, 0.9) !important;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.chapter3-page .el-card__body {
+  padding: 26px 28px 30px;
+}
+
+@media (max-width: 640px) {
+  .chapter3-page {
+    padding: 16px;
+  }
+
+  .chapter3-page .el-card__body {
+    padding: 20px 18px 24px;
+  }
+}
+
+/* 终章页略偏紫的渐变 */
+.chapter3-page.end-view {
+  background:
+    radial-gradient(ellipse 75% 55% at 85% 5%, rgba(233, 213, 255, 0.42), transparent 55%),
+    radial-gradient(ellipse 55% 45% at 15% 75%, rgba(251, 191, 36, 0.18), transparent 52%),
+    linear-gradient(135deg, #fff4dd 0%, #fffbeb 50%, #f3e8ff 100%);
+}
+
+/* 主按钮层次（第三章内） */
+.chapter3-page .action-row .el-button--primary,
+.chapter3-page .cta .el-button--primary {
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  box-shadow: 0 10px 24px rgba(245, 158, 11, 0.28);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.chapter3-page .action-row .el-button--primary:hover:not(:disabled),
+.chapter3-page .cta .el-button--primary:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 32px rgba(245, 158, 11, 0.38);
+}
