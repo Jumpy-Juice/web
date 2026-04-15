@@ -129,6 +129,7 @@ const showTipModal = ref(false)
 const activeCardId = ref('tip_hear_vs_understand')
 const pendingReward = ref(false)
 const lightFlash = ref(false)
+const wrongShake = ref(false)
 
 const currentItem = computed(() => items[index.value])
 
@@ -138,13 +139,18 @@ function choose(text: string) {
   if (!option) return
 
   selected.value = text
-  answered.value = true
 
   if (!option.correct) {
     ElMessage.error('这个词还不太对，再想想。')
+    wrongShake.value = true
+    window.setTimeout(() => {
+      wrongShake.value = false
+      if (!answered.value && selected.value === text) selected.value = ''
+    }, 420)
     return
   }
 
+  answered.value = true
   ElMessage.success('纠正成功！')
   triggerLightFlash()
 
@@ -219,7 +225,8 @@ async function toNext() {
 }
 
 function getOptionClass(option: QuizOption) {
-  if (!answered.value || selected.value !== option.text) return ''
+  if (selected.value !== option.text) return ''
+  if (!answered.value) return wrongShake.value ? 'wrong shake-error' : 'wrong'
   return option.correct ? 'correct' : 'wrong'
 }
 

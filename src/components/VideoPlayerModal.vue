@@ -78,9 +78,14 @@ function handleEnded() {
 }
 
 function onDialogClosed() {
+  // 用户主动关闭弹窗时，也视为“已观看完成”，以免阻塞关卡流程
+  const shouldAdvance = !endedByVideo.value
   if (videoRef.value) {
     videoRef.value.pause()
     videoRef.value.currentTime = 0
+  }
+  if (shouldAdvance) {
+    emit('video-ended')
   }
   endedByVideo.value = false
 }
