@@ -2,8 +2,8 @@
   <el-dialog
     v-model="open"
     fullscreen
-    width="min(900px, calc(100% - 24px))"
-    align-center
+    class="custom-video-dialog" 
+    append-to-body
     :close-on-click-modal="false"
     @closed="onDialogClosed"
   >
@@ -11,23 +11,25 @@
       <div class="title">视频播放</div>
     </template>
 
-    <video
-      v-if="hasVideo"
-      ref="videoRef"
-      class="video"
-      :src="videoSrc"
-      controls
-      autoplay
-      playsinline
-      @ended="handleEnded"
-    >
-      当前浏览器不支持视频播放。
-    </video>
+    <div class="video-content-wrapper">
+      <video
+        v-if="hasVideo"
+        ref="videoRef"
+        class="video-element"
+        :src="videoSrc"
+        controls
+        autoplay
+        playsinline
+        @ended="handleEnded"
+      >
+        当前浏览器不支持视频播放。
+      </video>
 
-    <div v-else class="fallback">
-      <div class="mock-box" role="group" aria-label="视频占位播放区域">
-        <div class="mock-text">▶️ 播放视频：{{ videoLabel }}</div>
-        <el-button type="primary" size="large" round @click="handleEnded">[模拟视频播放完毕]</el-button>
+      <div v-else class="fallback">
+        <div class="mock-box" role="group" aria-label="视频占位播放区域">
+          <div class="mock-text">▶️ 播放视频：{{ videoLabel }}</div>
+          <el-button type="primary" size="large" round @click="handleEnded">[模拟视频播放完毕]</el-button>
+        </div>
       </div>
     </div>
   </el-dialog>
@@ -78,7 +80,6 @@ function handleEnded() {
 }
 
 function onDialogClosed() {
-  // 用户主动关闭弹窗时，也视为“已观看完成”，以免阻塞关卡流程
   const shouldAdvance = !endedByVideo.value
   if (videoRef.value) {
     videoRef.value.pause()
@@ -92,41 +93,54 @@ function onDialogClosed() {
 </script>
 
 <style scoped>
+/* 1. 强制覆盖 Element 弹窗内部样式 */
+:deep(.el-dialog__body) {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #000; /* 黑色底色 */
+  padding: 0 !important;
+  height: calc(100vh - 54px); /* 动态计算内容区高度 */
+  overflow: hidden;
+}
+
+/* 2. 视频内容包装器 */
+.video-content-wrapper {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* 3. 核心：智能适配横竖版 */
+.video-element {
+  /* 优先占据宽度，保证 16:9 视频足够大 */
+  width: 100%; 
+  max-width: 1200px; /* 如果是超宽屏，限制最大显示宽度 */
+  
+  /* 同时限制高度，解决竖版视频超出问题 */
+  max-height: 85vh; 
+  
+  /* 解决第二个视频变小的关键：确保它不被 flex 容器过度压缩 */
+  flex-shrink: 0; 
+
+  /* 保持比例 */
+  object-fit: contain; 
+  box-shadow: 0 0 40px rgba(0,0,0,0.5);
+}
+
 .title {
   font-weight: 800;
+  color: #1c1c1c;
 }
 
-.video {
-  width: 100%;
-  min-height: 320px;
-  border-radius: 10px;
-  background: #0f172a;
-}
-
+/* 占位图也需要占满空间 */
 .fallback {
-  min-height: 240px;
-  border-radius: 10px;
+  width: 100%;
+  height: 100%;
   display: grid;
   place-items: center;
-  gap: 10px;
   background: #0f172a;
-  color: #e2e8f0;
-}
-
-.mock-box {
-  width: min(720px, calc(100% - 24px));
-  display: grid;
-  place-items: center;
-  gap: 16px;
-  padding: 24px 16px;
-  border-radius: 14px;
-  border: 1px solid rgb(148 163 184 / 35%);
-  background: linear-gradient(180deg, rgb(15 23 42 / 100%) 0%, rgb(2 6 23 / 100%) 100%);
-}
-
-.mock-text {
-  font-weight: 900;
-  text-align: center;
-  line-height: 1.7;
 }
 </style>

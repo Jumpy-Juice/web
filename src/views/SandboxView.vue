@@ -2,6 +2,10 @@
   <main class="sandbox-view">
     <el-button class="back-btn" round @click="goHome">返回首页</el-button>
 
+    <div class="sticker sticker-top-right"></div>
+    <div class="sticker sticker-bottom-left"></div>
+    <div class="sticker sticker-top-left"></div>
+
     <div class="robot-wrap">
       <PaiRobot ref="paiRef" mode="interactive" />
     </div>
@@ -43,7 +47,6 @@ function doRotate() {
 }
 
 function doDance() {
-  // “跳个舞”定义为“先旋转，再跳跃”
   paiRef.value?.playAction('rotate')
   window.setTimeout(() => {
     paiRef.value?.playAction('jump')
@@ -59,13 +62,48 @@ function goHome() {
 <style scoped>
 .sandbox-view {
   min-height: 100vh;
-  background: radial-gradient(circle at 30% 10%, #fff7ed 0%, #f7fbff 45%, #eef8f3 100%);
+  background:
+    radial-gradient(circle at 12% -10%, rgba(237, 186, 142, 0.82), transparent 84%),
+    radial-gradient(circle at 84% 0%, rgba(152, 175, 255, 0.12), transparent 40%),
+    var(--lv-bg);
   position: relative;
   overflow: hidden;
   padding-bottom: 110px;
+  isolation: isolate;
+}
+
+.sandbox-view::before,
+.sandbox-view::after {
+  content: ''; 
+  position: absolute;
+  border-radius: 9999px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.sandbox-view::before {
+  width: 360px;
+  height: 360px;
+  left: -120px;
+  top: -110px;
+  background:
+    radial-gradient(circle at 28% 28%, rgb(255 255 255 / 70%) 0%, transparent 45%),
+    radial-gradient(circle, rgb(255 198 125 / 48%) 0%, rgb(255 198 125 / 0%) 72%);
+}
+
+.sandbox-view::after {
+  width: 300px;
+  height: 300px;
+  right: -90px;
+  bottom: -120px;
+  background:
+    radial-gradient(circle at 38% 34%, rgb(255 255 255 / 70%) 0%, transparent 42%),
+    radial-gradient(circle, rgb(139 200 255 / 42%) 0%, rgb(139 200 255 / 0%) 72%);
 }
 
 .robot-wrap {
+  position: relative;
+  z-index: 1; 
   min-height: 100vh;
   display: grid;
   place-items: center;
@@ -101,4 +139,52 @@ function goHome() {
   min-width: 160px;
   font-weight: 900;
 }
+
+.sticker {
+  position: absolute;
+  width: 150px;       
+  height: 150px;      
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  pointer-events: none; 
+  z-index: 5;          
+  filter: drop-shadow(0 4px 10px rgba(0,0,0,0.12)); 
+}
+
+/* 右侧中间偏上 */
+.sticker-top-right {
+  top: 23%;          
+  right: 8%;          
+  width: 250px;  
+  height: 250px;
+  transform: rotate(12deg); 
+  background-image: url('../assets/sticker1.png'); 
+}
+
+.sticker-bottom-left {
+  bottom: 28%;    
+  left: 10%;     
+  width: 280px; 
+  height: 280px;
+  transform: rotate(-15deg); 
+  background-image: url('../assets/sticker2.png');
+}
+
+.sticker-top-left {
+  top: 12%;         
+  left: 18%;           
+  width: 350px;  
+  height: 350px;
+  transform: rotate(-12deg); 
+  background-image: url('../assets/sticker3.png'); 
+}
+
+@media (max-width: 768px) {
+  .sticker {
+    width: 100px;
+    height: 100px;
+  }
+}
+
 </style>
