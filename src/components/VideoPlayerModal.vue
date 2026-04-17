@@ -1,35 +1,40 @@
 <template>
   <el-dialog
     v-model="open"
-    fullscreen
+    title="视频学习"
+    width="800px"
     class="custom-video-dialog" 
     append-to-body
+    destroy-on-close
     :close-on-click-modal="false"
     @closed="onDialogClosed"
   >
-    <template #header>
-      <div class="title">视频播放</div>
-    </template>
-
-    <div class="video-content-wrapper">
-      <video
-        v-if="hasVideo"
-        ref="videoRef"
-        class="video-element"
-        :src="videoSrc"
-        controls
-        autoplay
-        playsinline
-        @ended="handleEnded"
-      >
-        当前浏览器不支持视频播放。
-      </video>
-
-      <div v-else class="fallback">
-        <div class="mock-box" role="group" aria-label="视频占位播放区域">
-          <div class="mock-text">▶️ 播放视频：{{ videoLabel }}</div>
-          <el-button type="primary" size="large" round @click="handleEnded">[模拟视频播放完毕]</el-button>
+    <div class="video-container">
+      <template v-if="hasVideo">
+        <div v-if="!isStarted" class="video-placeholder" @click="startPlay">
+          <button class="play-btn-cream">
+            <span class="play-icon">▶</span>
+            播放
+          </button>
         </div>
+        
+        <video
+          v-else
+          ref="videoRef"
+          class="video-player"
+          :src="videoSrc"
+          controls
+          autoplay
+          playsinline
+          @ended="handleEnded"
+        >
+          您的浏览器不支持视频播放。
+        </video>
+      </template>
+
+      <div v-else class="fallback-content">
+        <p>暂无视频资源: {{ videoLabel }}</p>
+        <el-button @click="handleEnded">跳过模拟</el-button>
       </div>
     </div>
   </el-dialog>
@@ -49,98 +54,109 @@ const emit = defineEmits<{
   (e: 'video-ended'): void
 }>()
 
-const videoRef = ref<HTMLVideoElement | null>(null)
-const endedByVideo = ref(false)
+const isStarted = ref(false)
+
 const hasVideo = computed(() => Boolean(props.videoSrc && props.videoSrc.trim()))
-const videoLabel = computed(() => (hasVideo.value ? props.videoSrc : props.videoSrc?.trim() || '（未提供视频资源）'))
+const videoLabel = computed(() => props.videoSrc || '未定义')
 
 const open = computed({
   get: () => props.modelValue,
-  set: (value: boolean) => emit('update:modelValue', value),
+  set: (v) => emit('update:modelValue', v)
 })
 
-watch(
-  () => props.modelValue,
-  (visible) => {
-    if (visible) {
-      endedByVideo.value = false
-      if (hasVideo.value) {
-        window.setTimeout(() => {
-          videoRef.value?.play().catch(() => {})
-        }, 0)
-      }
-    }
-  },
-)
+watch(() => props.modelValue, (val) => {
+  if (val) isStarted.value = false
+})
+
+function startPlay() {
+  isStarted.value = true
+}
 
 function handleEnded() {
-  endedByVideo.value = true
   open.value = false
   emit('video-ended')
 }
 
 function onDialogClosed() {
-  const shouldAdvance = !endedByVideo.value
-  if (videoRef.value) {
-    videoRef.value.pause()
-    videoRef.value.currentTime = 0
-  }
-  if (shouldAdvance) {
+  if (isStarted.value) {
     emit('video-ended')
   }
-  endedByVideo.value = false
+  isStarted.value = false
 }
 </script>
 
 <style scoped>
-/* 1. 强制覆盖 Element 弹窗内部样式 */
-:deep(.el-dialog__body) {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #000; /* 黑色底色 */
-  padding: 0 !important;
-  height: calc(100vh - 54px); /* 动态计算内容区高度 */
+:deep(.el-dialog) {
+  border-radius: 16px;
   overflow: hidden;
+  border: 1px solid rgba(0,0,0,0.1);
+  box-shadow: 0 20px 50px rgba(0,0,0,0.3);
 }
 
-/* 2. 视频内容包装器 */
-.video-content-wrapper {
+:deep(.el-dialog__header) {
+  margin-right: 0;
+  padding-bottom: 10px;
+  background: #fff;
+}
+
+:deep(.el-dialog__body) {
+  padding: 0 !important; 
+  background-color: #000;
+}
+
+.video-container {
   width: 100%;
-  height: 100%;
+  aspect-ratio: 16 / 9; 
+  background: #000;
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-/* 3. 核心：智能适配横竖版 */
-.video-element {
-  /* 优先占据宽度，保证 16:9 视频足够大 */
-  width: 100%; 
-  max-width: 1200px; /* 如果是超宽屏，限制最大显示宽度 */
-  
-  /* 同时限制高度，解决竖版视频超出问题 */
-  max-height: 85vh; 
-  
-  /* 解决第二个视频变小的关键：确保它不被 flex 容器过度压缩 */
-  flex-shrink: 0; 
-
-  /* 保持比例 */
-  object-fit: contain; 
-  box-shadow: 0 0 40px rgba(0,0,0,0.5);
-}
-
-.title {
-  font-weight: 800;
-  color: #1c1c1c;
-}
-
-/* 占位图也需要占满空间 */
-.fallback {
-  width: 100%;
-  height: 100%;
+.video-placeholder {
+  position: absolute;
+  inset: 0;
+  background: #000;
   display: grid;
   place-items: center;
-  background: #0f172a;
+  cursor: pointer;
+  z-index: 10;
+}
+
+.play-btn-cream {
+  background-color: #deb963; 
+  color: #1c1c1c;           
+  border: none;
+  padding: 14px 28px;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 50px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+}
+
+.play-btn-cream:hover {
+  transform: scale(1.05);
+  background-color: #fffdf9; 
+}
+
+.play-icon {
+  font-size: 18px;
+}
+
+.video-player {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.fallback-content {
+  color: white;
+  text-align: center;
 }
 </style>

@@ -109,6 +109,14 @@ function goHome() {
   display: grid;
   place-items: center;
   padding: 24px;
+  transform: scale(1.5);
+  transform-origin: center center;
+}
+
+@media (max-width: 768px) {
+  .robot-wrap {
+    transform: scale(1.2);
+  }
 }
 
 .back-btn {

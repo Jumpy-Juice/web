@@ -492,12 +492,14 @@ const actionClass = computed(() => (props.action ? `action-${props.action}` : ''
 
 @keyframes spin {
   from {
-    rotate: 0deg;
+    transform: rotateY(0deg); 
   }
   to {
-    rotate: 360deg;
+    transform: rotateY(360deg); 
   }
 }
+
+
 
 @keyframes dance {
   0%,

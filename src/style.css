@@ -191,7 +191,12 @@ main[class$='-view'] > * {
   z-index: 1;
 }
 
-[class*='-card'] {
+.home-card,
+.intro-card,
+.story-card,
+.level-card,
+.quiz-card,
+.end-card {
   background: var(--lv-bg) !important;
   border: 2px solid #f0e2c8 !important;
   border-radius: 24px !important;
@@ -200,14 +205,15 @@ main[class$='-view'] > * {
   overflow: hidden;
 }
 
-[class*='-card']::before,
-[class*='-card']::after {
-  content: '';
+/* 2. 同样精确指定这些卡片才生成右上角方框 */
+.home-card::before,
+.intro-card::before,
+.story-card::before,
+.level-card::before,
+.quiz-card::before,
+.end-card::before {
+  content: ''; /* 只有在这里才生成方框 */
   position: absolute;
-  pointer-events: none;
-}
-
-[class*='-card']::before {
   right: 12px;
   top: 12px;
   width: 88px;
@@ -216,20 +222,28 @@ main[class$='-view'] > * {
   background: linear-gradient(180deg, #fff3dd 0%, #ffe7bf 100%);
   border: 1px solid rgb(206 156 68 / 45%);
   opacity: 0.8;
+  pointer-events: none;
 }
 
-[class*='-card']::after {
+/* 3. 精确指定左下角装饰圆圈 */
+.home-card::after,
+.intro-card::after,
+.story-card::after,
+.level-card::after,
+.quiz-card::after,
+.end-card::after {
+  content: '';
+  position: absolute;
   left: 16px;
   bottom: 16px;
   width: 64px;
   height: 64px;
   border-radius: 9999px;
-  background:
-    radial-gradient(circle at 30% 30%, rgb(255 255 255 / 80%) 0%, transparent 42%),
-    radial-gradient(circle, rgb(216 247 213 / 70%) 0%, rgb(216 247 213 / 0%) 76%);
+  background: radial-gradient(circle at 30% 30%, rgb(255 255 255 / 80%) 0%, transparent 42%),
+              radial-gradient(circle, rgb(216 247 213 / 70%) 0%, rgb(216 247 213 / 0%) 76%);
   opacity: 0.75;
+  pointer-events: none;
 }
-
 .el-button {
   font-family: var(--lv-font);
   font-weight: 400;

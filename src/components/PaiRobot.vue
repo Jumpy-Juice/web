@@ -350,10 +350,10 @@ defineExpose({
 
 @keyframes action-rotate {
   from {
-    rotate: 0deg;
+    transform: rotateY(0deg); 
   }
   to {
-    rotate: 360deg;
+    transform: rotateY(360deg); 
   }
 }
 

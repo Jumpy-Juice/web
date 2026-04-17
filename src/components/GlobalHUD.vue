@@ -1,6 +1,6 @@
 <template>
   <header class="global-hud">
-    <el-card class="hud-card" shadow="always">
+    <el-card class="hud-shell">
       <div class="hud-row">
         <div class="hud-stars">
           <el-icon class="star-icon"><StarFilled /></el-icon>
@@ -91,7 +91,7 @@ const allCards = [
   pointer-events: none;
 }
 
-.hud-card {
+.hud-shell {
   width: fit-content;
   border-radius: 999px;
   border: 1px solid rgb(206 156 68 / 48%);
@@ -210,7 +210,11 @@ const allCards = [
   color: #64748b;
 }
 
+
+
 @media (max-width: 480px) {
+
+
   .global-hud {
     top: 10px;
     right: 10px;

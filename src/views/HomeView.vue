@@ -16,9 +16,13 @@
       <h1>听见指令，唤醒小派</h1>
       <h2>和你的 AI 宠物机器人一起，解锁“听懂你”的秘密</h2>
 
-      <p class="intro-text">
-        欢迎来到 AI 训练站。今天，你将得到一只全新的 AI 宠物机器人——小派。它很可爱，也很想和你做朋友。可是现在，它还不会听懂你的话。你愿意陪它一起成长，教会它“听见”“分辨”“回应”吗？
-      </p>
+      <div class="intro-content">
+      <p class="intro-text">欢迎来到 AI 训练站。</p>
+      <p class="intro-text">今天，你将得到一只全新的 AI 宠物机器人——小派。</p>
+      <p class="intro-text">它很可爱，也很想和你做朋友。</p>
+      <p class="intro-text">可是现在，它还不会听懂你的话。</p>
+      <p class="intro-text">你愿意陪它一起成长，教会它“听见”“分辨”“回应”吗？</p>
+      </div>
 
       <section class="feature-grid" aria-label="训练亮点">
         <article class="feature-item">
@@ -196,6 +200,7 @@ h2 {
   font-size: 16px;
   line-height: 1.85;
   color: #5f5f5d;
+  text-align: center;
 }
 
 .feature-grid {
