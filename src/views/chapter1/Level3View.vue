@@ -68,11 +68,7 @@
       @next="nextDialogue"
     />
 
-    <VideoPlayerModal
-      v-model="showVideoModal"
-      video-src="/videos/logic.mp4"
-      @video-ended="onVideoEnded"
-    />
+    
   </main>
 </template>
 
@@ -84,7 +80,6 @@ import DialogueBox from '../../components/DialogueBox.vue'
 import PaiRobot from '../../components/PaiRobot.vue'
 import AboRobot from '../../components/AboRobot.vue'
 import { useGameStore } from '../../stores/gameStore'
-import VideoPlayerModal from '../../components/VideoPlayerModal.vue'
 import { playEnergyStarFly } from '../../utils/energyStarFly'
 
 type Stage = 'abo' | 'pai' | 'settlement' | 'done'
@@ -101,7 +96,6 @@ const gameStore = useGameStore()
 
 const stage = ref<Stage>('abo')
 const paiRef = ref<InstanceType<typeof PaiRobot> | null>(null)
-const showVideoModal = ref(false)
 const rewarded = ref(false)
 const showNextButton = ref(false)
 
@@ -198,6 +192,7 @@ function handlePaiCommand(command: Command) {
   }
 }
 
+// 找到 nextDialogue 函数并修改如下：
 function nextDialogue() {
   const list = dialogues.value
   if (dialogueIndex.value < list.length - 1) {
@@ -205,21 +200,26 @@ function nextDialogue() {
     return
   }
 
+  // 原逻辑：if (stage.value === 'settlement') { showVideoModal.value = true }
+  // 修改后：如果对话结束且处于结算阶段，直接触发完成逻辑
   if (stage.value === 'settlement') {
-    showVideoModal.value = true
+    void handleLevelCompleteDirectly()
   }
 }
 
-async function onVideoEnded() {
+// 添加一个新的直接完成函数
+async function handleLevelCompleteDirectly() {
   if (!rewarded.value) {
     rewarded.value = true
-    await playEnergyStarFly()
-    gameStore.addStar()
-    showNextButton.value = true
+    await playEnergyStarFly() // 播放能量星飞入动画
+    gameStore.addStar()       // 增加能量星
+    showNextButton.value = true // 显示“进入下一页”按钮
     stage.value = 'done'
     ElMessage.success('恭喜你完成第二关！获得：小派能量星 ×1')
   }
 }
+
+
 
 function goEnd() {
   router.push('/chapter1/end')

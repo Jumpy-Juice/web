@@ -502,15 +502,22 @@ const actionClass = computed(() => (props.action ? `action-${props.action}` : ''
 
 
 @keyframes dance {
-  0%,
+0% {
+    transform: translateY(0) rotateY(0deg);
+  }
+  60% {
+    transform: translateY(0) rotateY(360deg);
+  }
+  80% {
+    transform: translateY(-25px) rotate(360deg);
+  }
   100% {
-    transform: translateY(0) rotate(0deg);
-  }
-  25% {
-    transform: translateY(-8px) rotate(-8deg);
-  }
-  75% {
-    transform: translateY(-8px) rotate(8deg);
+    transform: translateY(0) rotate(360deg);
   }
 }
+
+.action-dance .abo-robot {
+  animation: dance 1.25s ease-in-out infinite;
+}
+
 </style>

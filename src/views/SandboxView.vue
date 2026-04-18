@@ -2,10 +2,6 @@
   <main class="sandbox-view">
     <el-button class="back-btn" round @click="goHome">返回首页</el-button>
 
-    <img src="../assets/sticker1.png" class="sticker sticker-top-right sticker-blurred" alt="虚化贴纸" />
-    <div class="sticker sticker-bottom-left"></div>
-    <div class="sticker sticker-top-left"></div>
-    <div class="sticker sticker-bottom-right"></div>
 
     <div class="robot-wrap">
       <PaiRobot ref="paiRef" mode="interactive" />
@@ -167,41 +163,7 @@ function goHome() {
   filter: blur(0.4px) drop-shadow(0 4px 12px rgba(0,0,0,0.05));
 }
 
-.sticker-top-right {
-  top: 15%;          
-  right: 15%;          
-  width: 250px;  
-  height: 250px;
-  transform: rotate(12deg); 
-  background-image: url('../assets/sticker1.png'); 
-}
 
-.sticker-bottom-left {
-  bottom: 28%;    
-  left: 10%;     
-  width: 280px; 
-  height: 280px;
-  transform: rotate(-15deg); 
-  background-image: url('../assets/sticker2.png');
-}
-
-.sticker-top-left {
-  top: 12%;         
-  left: 18%;           
-  width: 350px;  
-  height: 350px;
-  transform: rotate(-12deg); 
-  background-image: url('../assets/sticker3.png'); 
-}
-
-.sticker-bottom-right {
-  bottom: 23%;    
-  right: 10%;     
-  width: 280px; 
-  height: 280px;
-  transform: rotate(15deg); 
-  background-image: url('../assets/sticker4.png');
-}
 
 @media (max-width: 768px) {
   .sticker {

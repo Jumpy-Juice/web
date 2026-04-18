@@ -130,7 +130,7 @@ const commands: Item[] = [
 ]
 
 const actions: Item[] = [
-  { id: 'wave', text: '挥手' },
+  { id: 'wave', text: '摇摇头' },
   { id: 'rotate', text: '身体旋转360°' },
   { id: 'rotate-jump', text: '先旋转，再跳跃' },
 ]

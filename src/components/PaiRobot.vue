@@ -373,10 +373,10 @@ defineExpose({
 @keyframes action-wave-head {
   0%,
   100% {
-    transform: translateX(-50%) rotate(0deg);
+    transform: translateX(-50%) rotate(-15deg);
   }
   50% {
-    transform: translateX(-50%) rotate(6deg);
+    transform: translateX(-50%) rotate(15deg);
   }
 }
 
@@ -386,7 +386,7 @@ defineExpose({
     transform: translateX(-50%) rotate(0deg);
   }
   50% {
-    transform: translateX(-50%) rotate(-10deg);
+    transform: translateX(-50%) rotate(-20deg);
   }
 }
 </style>
